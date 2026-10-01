@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { LatestRelease } from "@/types/release";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Layers,
   Zap,
@@ -23,39 +24,48 @@ interface PhotoPickerPageProps {
 export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
   const [loupeActive, setLoupeActive] = useState(true);
   const [activeStar, setActiveStar] = useState(5);
+  const { t, isVi } = useLanguage();
 
   const supportedFormats = [
     { brand: "Sony", formats: ".ARW (A7R V 61MP, A7 IV 33MP, A1 50MP, A9 III)" },
     { brand: "Canon", formats: ".CR2 / .CR3 (EOS R5, R6 II, R3, 5D Mark IV)" },
     { brand: "Nikon", formats: ".NEF (Z8, Z9, Z6 III, D850)" },
     { brand: "Fujifilm", formats: ".RAF (X-T5, X-H2, GFX 100 II)" },
-    { brand: "Định Dạng Chung", formats: ".JPG / .JPEG / .PNG / .TIFF sRGB & AdobeRGB" },
+    { brand: isVi ? "Định Dạng Chung" : "Universal Formats", formats: ".JPG / .JPEG / .PNG / .TIFF sRGB & AdobeRGB" },
   ];
 
   const features = [
     {
-      title: "Giải Mã Trực Tiếp Embedded Preview",
-      desc: "Thay vì de-mosaic toàn bộ cảm biến Bayer 60MP trên CPU gây nghẽn, MVD đọc trực tiếp khối preview độ phân giải cao từ phần cứng bằng LibRaw, cho tốc độ hiển thị tức thì trong 0.02 giây.",
+      title: isVi ? "Giải Mã Trực Tiếp Embedded Preview" : "Direct Embedded Preview Decoding",
+      desc: isVi
+        ? "Thay vì de-mosaic toàn bộ cảm biến Bayer 60MP trên CPU gây nghẽn, MVD đọc trực tiếp khối preview độ phân giải cao từ phần cứng bằng LibRaw, cho tốc độ hiển thị tức thì trong 0.02 giây."
+        : "Instead of CPU de-mosaicing full 60MP Bayer sensors, MVD decodes hardware embedded previews via LibRaw, rendering frames instantaneously in 0.02s.",
       stat: "0.02s",
-      statLabel: "Thời gian mở ảnh",
+      statLabel: isVi ? "Thời gian mở ảnh" : "Decode latency",
     },
     {
-      title: "Kính Lúp Soi Nét Mắt 1:1 Siêu Nét",
-      desc: "Nhấn giữ hoặc toggle phím Z để soi nét 100% tại tròng mắt và lông mi cô dâu chú rể. Kiểm tra ngay lập tức ảnh có bị out nét hoặc rung tay hay không mà không cần zoom toàn màn hình.",
+      title: isVi ? "Kính Lúp Soi Nét Mắt 1:1 Siêu Nét" : "1:1 Ultra-Sharp Eye Focus Loupe",
+      desc: isVi
+        ? "Nhấn giữ hoặc toggle phím Z để soi nét 100% tại tròng mắt và lông mi cô dâu chú rể. Kiểm tra ngay lập tức ảnh có bị out nét hoặc rung tay hay không mà không cần zoom toàn màn hình."
+        : "Hold or toggle Z key to inspect 100% 1:1 pixel focus on iris and eyelashes. Verify focus accuracy instantly without full-screen zoom lags.",
       stat: "<16ms",
-      statLabel: "Độ trễ lúp 100%",
+      statLabel: isVi ? "Độ trễ lúp 100%" : "Loupe latency",
     },
     {
-      title: "Đồng Bộ Phím Tắt Tiêu Chuẩn Studio",
-      desc: "Bàn phím được tối ưu hóa cho thợ lọc ảnh chuyên nghiệp: phím 1..5 gán sao, phím 6..9 gán nhãn màu, phím Space lướt ảnh tiếp theo, phím Z soi nét mắt. Thao tác quen thuộc 100% như Lightroom.",
+      title: isVi ? "Đồng Bộ Phím Tắt Tiêu Chuẩn Studio" : "Studio-Standard Keyboard Shortcuts",
+      desc: isVi
+        ? "Bàn phím được tối ưu hóa cho thợ lọc ảnh chuyên nghiệp: phím 1..5 gán sao, phím 6..9 gán nhãn màu, phím Space lướt ảnh tiếp theo, phím Z soi nét mắt. Thao tác quen thuộc 100% như Lightroom."
+        : "Designed for production speed: 1..5 keys for star ratings, 6..9 keys for color tags, Spacebar for advance, Z for loupe zoom. Matches familiar Lightroom muscle memory.",
       stat: "60 FPS",
-      statLabel: "Khung hình mượt mà",
+      statLabel: isVi ? "Khung hình mượt mà" : "Fluid frame rate",
     },
     {
-      title: "Tiết Kiệm Bộ Nhớ Đệm RAM Vượt Trội",
-      desc: "Chỉ chiếm dụng từ 118MB đến 190MB RAM ngay cả khi nạp thư mục hơn 3,000 ảnh RAW. Máy tính không bị nóng, không hú quạt và hoạt động cực êm ái trên cả MacBook Air M1 cơ bản.",
+      title: isVi ? "Tiết Kiệm Bộ Nhớ Đệm RAM Vượt Trội" : "Ultralight RAM Memory Footprint",
+      desc: isVi
+        ? "Chỉ chiếm dụng từ 118MB đến 190MB RAM ngay cả khi nạp thư mục hơn 3,000 ảnh RAW. Máy tính không bị nóng, không hú quạt và hoạt động cực êm ái trên cả MacBook Air M1 cơ bản."
+        : "Occupies only 118MB to 190MB RAM even with 3,000+ RAW images loaded. Laptops run cool without fan noise, preserving battery all day.",
       stat: "118 MB",
-      statLabel: "RAM trung bình",
+      statLabel: isVi ? "RAM trung bình" : "Average RAM RSS",
     },
   ];
 
@@ -71,12 +81,17 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
-              Lọc Hàng Nghìn Ảnh RAW Thần Tốc.{" "}
-              <span className="text-blue-600 dark:text-blue-400">Không Giật Lag.</span>
+              {isVi ? (
+                <>Lọc Hàng Nghìn Ảnh RAW Thần Tốc. <span className="text-blue-600 dark:text-blue-400">Không Giật Lag.</span></>
+              ) : (
+                <>Cull Thousands of RAW Photos. <span className="text-blue-600 dark:text-blue-400">Zero Lag.</span></>
+              )}
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-              Phần mềm chọn ảnh chuyên nghiệp thế hệ mới xây dựng trên Rust native. Giải quyết triệt để sự ì ạch của Lightroom khi phải lọc các buổi chụp tiệc cưới, phóng sự từ 1,500 đến 3,000 ảnh RAW.
+              {isVi
+                ? "Phần mềm chọn ảnh chuyên nghiệp thế hệ mới xây dựng trên Rust native. Giải quyết triệt để sự ì ạch của Lightroom khi phải lọc các buổi chụp tiệc cưới, phóng sự từ 1,500 đến 3,000 ảnh RAW."
+                : "Next-generation native photo culling built in Rust. Solves Lightroom's sluggishness when reviewing high-volume wedding and event sessions with 1,500 to 3,000+ RAW images."}
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-3">
@@ -85,13 +100,13 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
                 className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors duration-150 whitespace-nowrap shadow-sm"
               >
                 <Download size={15} />
-                <span>Tải Photo Picker Pro v{release.version}</span>
+                <span>{isVi ? `Tải Photo Picker Pro v${release.version}` : `Download Photo Picker Pro v${release.version}`}</span>
               </Link>
               <Link
                 to="/benchmark"
                 className="px-5 py-3 rounded-2xl bg-white dark:bg-[#0E1422] hover:bg-slate-100 dark:hover:bg-[#161F33] text-slate-700 dark:text-slate-300 font-semibold text-xs border border-slate-200 dark:border-white/[0.08] transition-colors duration-150 flex items-center gap-1.5 whitespace-nowrap shadow-sm"
               >
-                <span>Xem So Sánh Benchmark</span>
+                <span>{isVi ? "Xem So Sánh Benchmark" : "View Benchmark Matrix"}</span>
                 <ArrowRight size={13} className="text-blue-500" />
               </Link>
             </div>
@@ -99,7 +114,7 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
 
           <div className="lg:col-span-4 p-6 rounded-3xl bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.08] space-y-4 font-mono text-xs shadow-sm">
             <div className="text-[11px] text-slate-500 uppercase tracking-wider font-bold">
-              Thông Số Động Cơ
+              {isVi ? "Thông Số Động Cơ" : "Engine Metrics"}
             </div>
             <div className="space-y-2 divide-y divide-slate-100 dark:divide-white/[0.04]">
               <div className="flex justify-between py-1.5">
@@ -107,11 +122,11 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
                 <span className="text-slate-900 dark:text-white font-bold">Rust / Tauri Native</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-500 dark:text-slate-400">Bộ nhớ RAM:</span>
+                <span className="text-slate-500 dark:text-slate-400">{isVi ? "Bộ nhớ RAM:" : "Memory:"}</span>
                 <span className="text-blue-600 dark:text-blue-400 font-bold tabular-nums">~118 MB RSS</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-500 dark:text-slate-400">Tốc độ mở ảnh:</span>
+                <span className="text-slate-500 dark:text-slate-400">{isVi ? "Tốc độ mở ảnh:" : "Decode speed:"}</span>
                 <span className="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">0.02s / frame</span>
               </div>
               <div className="flex justify-between py-1.5">
@@ -140,7 +155,7 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
                   loupeActive ? "bg-blue-600 text-white" : "bg-slate-800 text-slate-300 hover:text-white"
                 }`}
               >
-                <Eye size={12} /> {loupeActive ? "[Z] Soi Nét 100% Đang Bật" : "[Z] Bật Soi Nét 100%"}
+                <Eye size={12} /> {loupeActive ? (isVi ? "[Z] Soi Nét 100% Đang Bật" : "[Z] 100% Loupe Active") : (isVi ? "[Z] Bật Soi Nét 100%" : "[Z] Enable 100% Loupe")}
               </button>
             </div>
           </div>
@@ -198,7 +213,7 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
 
             {/* Star Rating Interactive HUD */}
             <div className="absolute bottom-8 right-8 p-3 rounded-xl bg-[#0B0F1A]/90 backdrop-blur-md border border-white/10 flex items-center gap-3 shadow-xl">
-              <span className="text-xs font-mono text-slate-400">Đánh giá:</span>
+              <span className="text-xs font-mono text-slate-400">{isVi ? "Đánh giá:" : "Rating:"}</span>
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -222,10 +237,12 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="max-w-2xl space-y-2">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Những Đột Phá Thiết Thực Cho Thợ Ảnh
+            {isVi ? "Những Đột Phá Thiết Thực Cho Thợ Ảnh" : "Essential Breakthroughs for Professional Editors"}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            Không màu mè, từng tính năng đều được tối ưu cho tốc độ và thao tác tay của thợ lọc ảnh.
+            {isVi
+              ? "Không màu mè, từng tính năng đều được tối ưu cho tốc độ và thao tác tay của thợ lọc ảnh."
+              : "Zero unnecessary bloat. Every optimization is engineered for maximum hand speed and precision."}
           </p>
         </div>
 
@@ -264,7 +281,7 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
           <div className="flex items-center gap-2.5 border-b border-slate-100 dark:border-white/[0.06] pb-4">
             <Cpu size={18} className="text-blue-500" />
             <h3 className="text-xs font-mono font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-              Ma Trận Định Dạng Tương Thích (Hardware LibRaw Support)
+              {isVi ? "Ma Trận Định Dạng Tương Thích (Hardware LibRaw Support)" : "Hardware Compatibility Matrix (LibRaw Native Support)"}
             </h3>
           </div>
           <div className="divide-y divide-slate-100 dark:divide-white/[0.04] text-xs sm:text-sm font-mono">
@@ -281,23 +298,25 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
       {/* 5. Bottom Action */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4 pt-4">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-          Sẵn sàng lọc ảnh với tốc độ 60 FPS mượt mà?
+          {isVi ? "Sẵn sàng lọc ảnh với tốc độ 60 FPS mượt mà?" : "Ready to cull shoots with silky 60 FPS fluidity?"}
         </h3>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Tải về dùng thử đầy đủ 100% tính năng trong 7 ngày trên macOS và Windows.
+          {isVi
+            ? "Tải về dùng thử đầy đủ 100% tính năng trong 7 ngày trên macOS và Windows."
+            : "Download and evaluate full unrestricted features for 7 days on macOS and Windows."}
         </p>
         <div className="flex justify-center gap-3 pt-3">
           <Link
             to="/download"
             className="px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm transition-colors duration-150 whitespace-nowrap shadow-sm"
           >
-            Tải Ngay Bản Cài Đặt
+            {isVi ? "Tải Ngay Bản Cài Đặt" : "Download Native Build"}
           </Link>
           <Link
             to="/pricing"
             className="px-5 py-3.5 rounded-2xl bg-white dark:bg-[#0E1422] hover:bg-slate-100 dark:hover:bg-[#161F33] text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm transition-colors duration-150 border border-slate-200 dark:border-white/[0.08] whitespace-nowrap shadow-sm"
           >
-            Xem Bảng Giá Tham Khảo
+            {isVi ? "Xem Bảng Giá Tham Khảo" : "Reference Pricing"}
           </Link>
         </div>
       </section>

@@ -1,40 +1,43 @@
 import React from "react";
 import { Cpu, ShieldCheck, Zap, Terminal, Lock, RefreshCw, Layers } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function EngineeringSpecs() {
+  const { t, isVi } = useLanguage();
+
   const pillars = [
     {
       badge: "CORE ENGINE",
-      title: "Rust & Tauri Native Stack",
-      subtitle: "Nói không với Electron nặng nề",
-      desc: "Electron đóng gói cả trình duyệt Chromium nặng hàng trăm megabyte. MVD sử dụng Rust và Tauri native binary — dung lượng bộ cài chỉ ~5MB, khởi động tức thì trong 250ms và tiêu thụ bộ nhớ dưới 150MB RAM.",
+      title: t("specs.pillar1.title"),
+      subtitle: t("specs.pillar1.sub"),
+      desc: t("specs.pillar1.desc"),
       codeSnippet: `// Rust LibRaw Embedded Decode Pipeline
 let preview = raw_loader::extract_embedded_jpeg(&file_path)?;
 gpu_surface.stream_texture(preview.as_slice(), 60.0 /* fps */);`,
     },
     {
       badge: "GPU PIPELINE",
-      title: "Zero-Copy 1:1 Loupe Zoom",
-      subtitle: "Soi nét lông mi & tròng mắt tức thì",
-      desc: "Thay vì de-mosaic toàn bộ ma trận cảm biến 60 triệu điểm ảnh trên CPU gây đơ máy, MVD giải mã trực tiếp khối preview siêu nét từ phần cứng và nạp thẳng vào texture GPU Metal (macOS) / DirectX (Windows).",
+      title: t("specs.pillar2.title"),
+      subtitle: t("specs.pillar2.sub"),
+      desc: t("specs.pillar2.desc"),
       codeSnippet: `// Instant Focus Inspection
 const loupeRect = computeEyeTarget(cursorCoords, 1.0 /* 100% */);
 renderContext.blitToScreen(loupeRect, { latencyMs: 0.01 });`,
     },
     {
       badge: "SECURITY & PRIVACY",
-      title: "Local-First & Air-Gapped",
-      subtitle: "Bảo mật 100% dữ liệu khách hàng",
-      desc: "Mọi thao tác đọc, zoom, lọc sao, bóc tách và copy file ảnh đều thực thi cục bộ trên ổ cứng NVMe/SSD máy bạn. Không một byte ảnh hay danh sách khách hàng nào bị upload lên internet.",
+      title: t("specs.pillar3.title"),
+      subtitle: t("specs.pillar3.sub"),
+      desc: t("specs.pillar3.desc"),
       codeSnippet: `// Local File I/O Only
 fs::copy_safe(source_raw, target_album_dir, CopyOptions::Atomic)?;
 assert!(network_egress::is_blocked_for_photo_data());`,
     },
     {
       badge: "SESSION LIFECYCLE",
-      title: "Tự Động Đồng Bộ Phiên 0h00 VN",
-      subtitle: "Quản lý bản quyền tin cậy & mượt mà",
-      desc: "Hệ thống xác thực bản quyền kiểm tra quyền sử dụng chính hãng và tự động làm mới phiên làm việc vào đúng 0h00 hàng ngày theo giờ Việt Nam, đảm bảo an toàn tài khoản và ngăn chặn gian lận thiết bị.",
+      title: t("specs.pillar4.title"),
+      subtitle: t("specs.pillar4.sub"),
+      desc: t("specs.pillar4.desc"),
       codeSnippet: `// 00:00 ICT Scheduled Session Renewal
 cron::schedule("0 0 0 * * *", Timezone::Asia_HoChiMinh, || {
     auth_guard.validate_entitlement_and_refresh_session();
@@ -50,13 +53,13 @@ cron::schedule("0 0 0 * * *", Timezone::Asia_HoChiMinh, || {
           <div className="space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
               <Terminal size={11} />
-              <span>Kiến Trúc Nhân Hệ Thống</span>
+              <span>{t("specs.badge")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Đằng Sau Tốc Độ 0.02 Giây Mỗi Khung Hình
+              {t("specs.title")}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-              Tối ưu hóa từng chu kỳ vi xử lý CPU, luồng I/O đĩa cứng NVMe và đường ống GPU Metal/DirectX để phục vụ khối lượng công việc khắc nghiệt của studio.
+              {t("specs.subtitle")}
             </p>
           </div>
 

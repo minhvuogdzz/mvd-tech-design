@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { LatestRelease } from "@/types/release";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   FileSpreadsheet,
   Zap,
@@ -20,47 +21,61 @@ interface ContactSheetPageProps {
 }
 
 export function ContactSheetPage({ release }: ContactSheetPageProps) {
+  const { t, isVi } = useLanguage();
+
   const [sheetInput, setSheetInput] = useState(
-    "Khách báo in album cưới: DSC04892, DSC04895, 4901..4905, 4910, 5012-5015 (giao trước thứ 6)"
+    isVi
+      ? "Khách báo in album cưới: DSC04892, DSC04895, 4901..4905, 4910, 5012-5015 (giao trước thứ 6)"
+      : "Client wedding album list: DSC04892, DSC04895, 4901..4905, 4910, 5012-5015 (deliver by Friday)"
   );
   const [isProcessing, setIsProcessing] = useState(false);
   const [logs, setLogs] = useState<string[]>([
-    "Sẵn sàng bóc tách. Nhấn nút để khởi chạy Regex Engine...",
+    isVi
+      ? "Sẵn sàng bóc tách. Nhấn nút để khởi chạy Regex Engine..."
+      : "Ready to extract. Click button to launch Regex Engine...",
   ]);
   const [successCount, setSuccessCount] = useState<number | null>(null);
 
   const runExtraction = () => {
     setIsProcessing(true);
-    setLogs(["[1/5] Bắt đầu nhận diện chuỗi regex và mở rộng dải số..."]);
+    setLogs([isVi ? "[1/5] Bắt đầu nhận diện chuỗi regex và mở rộng dải số..." : "[1/5] Identifying regex patterns and expanding ranges..."]);
 
     setTimeout(() => {
       setLogs((prev) => [
         ...prev,
-        "[2/5] Đã bóc tách thành công 12 mã ảnh mục tiêu: 4892, 4895, 4901, 4902, 4903, 4904, 4905, 4910, 5012, 5013, 5014, 5015",
+        isVi
+          ? "[2/5] Đã bóc tách thành công 12 mã ảnh mục tiêu: 4892, 4895, 4901, 4902, 4903, 4904, 4905, 4910, 5012, 5013, 5014, 5015"
+          : "[2/5] Successfully isolated 12 target photo codes: 4892, 4895, 4901, 4902, 4903, 4904, 4905, 4910, 5012, 5013, 5014, 5015",
       ]);
     }, 250);
 
     setTimeout(() => {
       setLogs((prev) => [
         ...prev,
-        "[3/5] Quét đệ quy thư mục gốc SSD: /Volumes/Sony_RAW/2026_Wedding_TrangMinh/ (2,450 files)",
+        isVi
+          ? "[3/5] Quét đệ quy thư mục gốc SSD: /Volumes/Sony_RAW/2026_Wedding_TrangMinh/ (2,450 files)"
+          : "[3/5] Deep recursive scan in SSD master directory: /Volumes/Sony_RAW/2026_Wedding_TrangMinh/ (2,450 files)",
       ]);
     }, 550);
 
     setTimeout(() => {
       setLogs((prev) => [
         ...prev,
-        "  ↳ Khớp DSC04892.ARW -> Tìm thấy",
-        "  ↳ Khớp dải DSC04901.ARW .. DSC04905.ARW -> Tìm thấy đủ 5 files",
-        "  ↳ Khớp dải DSC05012.ARW .. DSC05015.ARW -> Tìm thấy đủ 4 files",
+        isVi ? "  ↳ Khớp DSC04892.ARW -> Tìm thấy" : "  ↳ Matched DSC04892.ARW -> Found",
+        isVi ? "  ↳ Khớp dải DSC04901.ARW .. DSC04905.ARW -> Tìm thấy đủ 5 files" : "  ↳ Matched range DSC04901.ARW .. DSC04905.ARW -> Found 5 files",
+        isVi ? "  ↳ Khớp dải DSC05012.ARW .. DSC05015.ARW -> Tìm thấy đủ 4 files" : "  ↳ Matched range DSC05012.ARW .. DSC05015.ARW -> Found 4 files",
       ]);
     }, 850);
 
     setTimeout(() => {
       setLogs((prev) => [
         ...prev,
-        "[4/5] Sao chép an toàn (Atomic File Copy) vào: /Exports/KhachChon_Album_30x30/",
-        "✓ [5/5] Hoàn tất 12/12 file khớp chính xác 100% trong 0.42 giây! (0 file thất lạc)",
+        isVi
+          ? "[4/5] Sao chép an toàn (Atomic File Copy) vào: /Exports/KhachChon_Album_30x30/"
+          : "[4/5] Atomic File Copy to target directory: /Exports/KhachChon_Album_30x30/",
+        isVi
+          ? "✓ [5/5] Hoàn tất 12/12 file khớp chính xác 100% trong 0.42 giây! (0 file thất lạc)"
+          : "✓ [5/5] Success: 12/12 files matched 100% in 0.42 seconds! (0 missing files)",
       ]);
       setSuccessCount(12);
       setIsProcessing(false);
@@ -70,18 +85,24 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
   const steps = [
     {
       num: "01",
-      title: "Nhận Danh Sách Từ Khách",
-      desc: "Khách gửi link Google Sheets, Google Drive hoặc nhắn tin Zalo với các mã số viết tắt, dải gạch nối (ví dụ: 4901-4905).",
+      title: isVi ? "Nhận Danh Sách Từ Khách" : "Receive Customer List",
+      desc: isVi
+        ? "Khách gửi link Google Sheets, Google Drive hoặc nhắn tin Zalo với các mã số viết tắt, dải gạch nối (ví dụ: 4901-4905)."
+        : "Clients send Google Sheets, Drive links, or message lists with shorthand notations (e.g., 4901-4905).",
     },
     {
       num: "02",
-      title: "Phân Tích Regex Thông Minh",
-      desc: "Hệ thống tự động loại bỏ tiền tố thừa (DSC, IMG, _MG), tách dải số liên tiếp và chuẩn hóa danh sách mã file chuẩn xác.",
+      title: isVi ? "Phân Tích Regex Thông Minh" : "Intelligent Regex Parsing",
+      desc: isVi
+        ? "Hệ thống tự động loại bỏ tiền tố thừa (DSC, IMG, _MG), tách dải số liên tiếp và chuẩn hóa danh sách mã file chuẩn xác."
+        : "The engine strips redundant prefixes (DSC, IMG, _MG), expands continuous numerical ranges, and normalizes candidate IDs.",
     },
     {
       num: "03",
-      title: "Dò Quét & Sao Chép Tức Thì",
-      desc: "Quét sâu toàn bộ thư mục thẻ nhớ hoặc SSD ngoài, tìm đúng file RAW gốc và sao chép vào folder bàn giao chỉ trong vài giây.",
+      title: isVi ? "Dò Quét & Sao Chép Tức Thì" : "Instant Search & Atomic Copy",
+      desc: isVi
+        ? "Quét sâu toàn bộ thư mục thẻ nhớ hoặc SSD ngoài, tìm đúng file RAW gốc và sao chép vào folder bàn giao chỉ trong vài giây."
+        : "Scans master cards or SSDs deeply, isolates master RAW files, and copies them to the delivery folder in seconds.",
     },
   ];
 
@@ -97,12 +118,17 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
-              Bóc Tách Mã Ảnh Google Sheets Trong{" "}
-              <span className="text-blue-600 dark:text-blue-400">0.4 Giây</span>
+              {isVi ? (
+                <>Bóc Tách Mã Ảnh Google Sheets Trong <span className="text-blue-600 dark:text-blue-400">0.4 Giây</span></>
+              ) : (
+                <>Extract Google Sheets Photo Codes in <span className="text-blue-600 dark:text-blue-400">0.4 Seconds</span></>
+              )}
             </h1>
 
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
-              Giải phóng đôi mắt và thời gian của bạn. Dán link Google Sheets hoặc danh sách số ảnh khách chọn, Contact The Sheet tự động tìm đúng file gốc và copy vào thư mục bàn giao với độ chính xác 100%.
+              {isVi
+                ? "Giải phóng đôi mắt và thời gian của bạn. Dán link Google Sheets hoặc danh sách số ảnh khách chọn, Contact The Sheet tự động tìm đúng file gốc và copy vào thư mục bàn giao với độ chính xác 100%."
+                : "Save hours of manual eyeballing. Paste Google Sheets links or client numbers, and Contact The Sheet automatically locates master RAW files and copies them to the export folder with 100% precision."}
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-3">
@@ -111,13 +137,13 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
                 className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors duration-150 whitespace-nowrap shadow-sm"
               >
                 <Download size={15} />
-                <span>Tải Contact The Sheet v{release.version}</span>
+                <span>{isVi ? `Tải Contact The Sheet v${release.version}` : `Download Contact The Sheet v${release.version}`}</span>
               </Link>
               <Link
                 to="/pricing"
                 className="px-5 py-3 rounded-2xl bg-white dark:bg-[#0E1422] hover:bg-slate-100 dark:hover:bg-[#161F33] text-slate-700 dark:text-slate-300 font-semibold text-xs border border-slate-200 dark:border-white/[0.08] transition-colors duration-150 flex items-center gap-1.5 whitespace-nowrap shadow-sm"
               >
-                <span>Bảng Giá Tham Khảo</span>
+                <span>{isVi ? "Bảng Giá Tham Khảo" : "Reference Pricing"}</span>
                 <ArrowRight size={13} className="text-blue-500" />
               </Link>
             </div>
@@ -125,23 +151,23 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
 
           <div className="lg:col-span-4 p-6 rounded-3xl bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.08] space-y-4 font-mono text-xs shadow-sm">
             <div className="text-[11px] text-slate-500 uppercase tracking-wider font-bold">
-              Chỉ Số Tự Động Hóa
+              {isVi ? "Chỉ Số Tự Động Hóa" : "Automation Metrics"}
             </div>
             <div className="space-y-2 divide-y divide-slate-100 dark:divide-white/[0.04]">
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-500 dark:text-slate-400">Thời gian bóc tách:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">0.42 giây</span>
+                <span className="text-slate-500 dark:text-slate-400">{isVi ? "Thời gian bóc tách:" : "Extraction speed:"}</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">0.42s</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-500 dark:text-slate-400">Độ chính xác:</span>
-                <span className="text-blue-600 dark:text-blue-400 font-bold tabular-nums">100.0% (Zero Error)</span>
+                <span className="text-slate-500 dark:text-slate-400">{isVi ? "Độ chính xác:" : "Accuracy:"}</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold tabular-nums">100.0%</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-500 dark:text-slate-400">Hỗ trợ dải số:</span>
+                <span className="text-slate-500 dark:text-slate-400">{isVi ? "Hỗ trợ dải số:" : "Range support:"}</span>
                 <span className="text-slate-900 dark:text-white font-bold">4901..4905, 5012-5015</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-500 dark:text-slate-400">Cơ chế copy:</span>
+                <span className="text-slate-500 dark:text-slate-400">{isVi ? "Cơ chế copy:" : "Copy pipeline:"}</span>
                 <span className="text-slate-900 dark:text-white">Atomic Safe Copy</span>
               </div>
             </div>
@@ -156,7 +182,7 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
             <div className="flex items-center gap-2">
               <FileSpreadsheet size={18} className="text-blue-500" />
               <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-                Trải Nghiệm Thử Nghiệm Bóc Tách Trực Tiếp Trên Web
+                {isVi ? "Trải Nghiệm Thử Nghiệm Bóc Tách Trực Tiếp Trên Web" : "Live Interactive Extraction Simulator on Web"}
               </h3>
             </div>
             <span className="text-[11px] font-mono text-slate-500">Live Web Regex Engine</span>
@@ -166,7 +192,7 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
             {/* Left: Input Textarea */}
             <div className="space-y-4">
               <label className="block text-xs font-mono font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                Nhập hoặc dán văn bản khách chọn (Zalo / Sheets):
+                {isVi ? "Nhập hoặc dán văn bản khách chọn (Zalo / Sheets):" : "Paste customer selection text (Zalo / Sheets / Excel):"}
               </label>
               <textarea
                 value={sheetInput}
@@ -181,12 +207,12 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
                   className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-2 transition-colors duration-150 cursor-pointer shadow-sm disabled:opacity-50 whitespace-nowrap"
                 >
                   <Zap size={14} />
-                  <span>{isProcessing ? "Đang Quét Dữ Liệu..." : "Bấm Bóc Tách Tự Động"}</span>
+                  <span>{isProcessing ? (isVi ? "Đang Quét Dữ Liệu..." : "Extracting...") : (isVi ? "Bấm Bóc Tách Tự Động" : "Run Extraction")}</span>
                 </button>
                 {successCount && (
                   <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
                     <CheckCircle2 size={14} />
-                    <span>Khớp {successCount} files</span>
+                    <span>{isVi ? `Khớp ${successCount} files` : `Matched ${successCount} files`}</span>
                   </span>
                 )}
               </div>
@@ -199,7 +225,7 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
                   <Terminal size={13} className="text-blue-400" />
                   <span>Terminal Engine Logs</span>
                 </span>
-                <span className="tabular-nums">Tốc độ: 0.04s Regex Parser</span>
+                <span className="tabular-nums">{isVi ? "Tốc độ: 0.04s Regex Parser" : "Speed: 0.04s Regex Parser"}</span>
               </div>
 
               <div className="space-y-1.5 overflow-y-auto max-h-[210px] text-xs leading-relaxed">
@@ -220,8 +246,8 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
               </div>
 
               <div className="pt-2.5 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-slate-400">
-                <span>An toàn dữ liệu: Atomic Copy</span>
-                <span className="text-emerald-400 font-bold">100% Zero File Thất Lạc</span>
+                <span>{isVi ? "An toàn dữ liệu: Atomic Copy" : "Data Safety: Atomic Copy"}</span>
+                <span className="text-emerald-400 font-bold">{isVi ? "100% Zero File Thất Lạc" : "100% Zero Missing Files"}</span>
               </div>
             </div>
           </div>
@@ -232,10 +258,12 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Chu Trình Tự Động Hóa Khép Kín
+            {isVi ? "Chu Trình Tự Động Hóa Khép Kín" : "Closed-Loop Automation Pipeline"}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            Giúp studio rút ngắn quy trình trả ảnh từ vài tiếng xuống còn vài chục giây.
+            {isVi
+              ? "Giúp studio rút ngắn quy trình trả ảnh từ vài tiếng xuống còn vài chục giây."
+              : "Shorten your delivery workflow from several exhausting hours down to seconds."}
           </p>
         </div>
 
@@ -248,7 +276,7 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/20">
-                    Bước {st.num}
+                    {isVi ? `Bước ${st.num}` : `Step ${st.num}`}
                   </span>
                   <span className="text-slate-400 dark:text-slate-600 font-mono text-xs">Phase 0{idx + 1}</span>
                 </div>
@@ -263,23 +291,23 @@ export function ContactSheetPage({ release }: ContactSheetPageProps) {
       {/* 4. Action Banner */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4 pt-4">
         <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-          Loại bỏ ngay sự mệt mỏi khi ngồi dò từng số ảnh!
+          {isVi ? "Loại bỏ ngay sự mệt mỏi khi ngồi dò từng số ảnh!" : "Eliminate manual filename eyeballing forever!"}
         </h3>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Tích hợp sẵn trong bộ cài đặt MVD Tech & Design v{release.version}.
+          {isVi ? `Tích hợp sẵn trong bộ cài đặt MVD Tech & Design v${release.version}.` : `Included out of the box in MVD Tech & Design v${release.version}.`}
         </p>
         <div className="flex justify-center gap-3 pt-3">
           <Link
             to="/download"
             className="px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm transition-colors duration-150 whitespace-nowrap shadow-sm"
           >
-            Tải Bản Cài Đặt Ngay
+            {isVi ? "Tải Bản Cài Đặt Ngay" : "Download Native Build"}
           </Link>
           <Link
             to="/apps/photo-counter"
             className="px-5 py-3.5 rounded-2xl bg-white dark:bg-[#0E1422] hover:bg-slate-100 dark:hover:bg-[#161F33] text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm transition-colors duration-150 border border-slate-200 dark:border-white/[0.08] whitespace-nowrap shadow-sm"
           >
-            Tìm Hiểu Photo Counter &rarr;
+            {isVi ? "Tìm Hiểu Photo Counter →" : "Explore Photo Counter →"}
           </Link>
         </div>
       </section>

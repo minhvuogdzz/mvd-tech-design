@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Camera,
   Layers,
@@ -9,34 +10,36 @@ import {
 } from "lucide-react";
 
 export function StudioWorkflow() {
+  const { t, isVi } = useLanguage();
+
   const steps = [
     {
       num: "01",
       icon: <Camera size={16} className="text-blue-500" />,
-      title: "Cắm Thẻ & Đọc RAW Tức Thì",
-      desc: "Hỗ trợ nguyên bản Sony ARW, Canon CR2/CR3, Nikon NEF, Fuji RAF và JPG. Tự động đọc embedded preview không tốn thời gian render.",
+      title: t("workflow.step1.title"),
+      desc: t("workflow.step1.desc"),
       timing: "0.00s latency",
     },
     {
       num: "02",
       icon: <Layers size={16} className="text-blue-500" />,
-      title: "Lọc 100% Loupe Siêu Tốc",
-      desc: "Soi nét lông mi & tròng mắt trong 0.01 giây bằng phím Z. Đánh giá 1-5 sao, gán nhãn màu 6-9 đồng bộ phím tắt Lightroom.",
-      timing: "60 FPS mượt mà",
+      title: t("workflow.step2.title"),
+      desc: t("workflow.step2.desc"),
+      timing: isVi ? "60 FPS mượt mà" : "Smooth 60 FPS",
     },
     {
       num: "03",
       icon: <FileSpreadsheet size={16} className="text-blue-500" />,
-      title: "Bóc Tách Mã Google Sheets",
-      desc: "Dán link Google Sheets hoặc danh sách số ảnh khách chọn. Regex engine tự động tìm đúng file gốc và copy vào thư mục trả khách.",
-      timing: "0.4s hoàn tất",
+      title: t("workflow.step3.title"),
+      desc: t("workflow.step3.desc"),
+      timing: isVi ? "0.4s hoàn tất" : "0.4s completed",
     },
     {
       num: "04",
       icon: <CheckCircle2 size={16} className="text-blue-500" />,
-      title: "Đối Soát Hợp Đồng Nghiệm Thu",
-      desc: "Photo Counter tự động đối chiếu số lượng ảnh cam kết trong hợp đồng (ảnh in, ảnh phóng, ảnh sửa) và xuất biên bản nghiệm thu.",
-      timing: "Chính xác 100%",
+      title: t("workflow.step4.title"),
+      desc: t("workflow.step4.desc"),
+      timing: isVi ? "Chính xác 100%" : "100% precision",
     },
   ];
 
@@ -48,19 +51,19 @@ export function StudioWorkflow() {
           <div className="space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
               <GitCommit size={11} />
-              <span>Quy Trình Chuẩn Studio</span>
+              <span>{t("workflow.badge")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Tự Động Hóa Từ Thẻ Nhớ Đến Bàn Giao Khách Hàng
+              {t("workflow.title")}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-              Giải phóng 90% thời gian ngồi dò từng số ảnh thủ công sau mỗi buổi chụp cưới, kỷ yếu và sự kiện.
+              {t("workflow.subtitle")}
             </p>
           </div>
 
           <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] text-xs text-slate-600 dark:text-slate-400 self-start md:self-auto font-mono shadow-sm">
             <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-            <span>4 bước khép kín</span>
+            <span>{isVi ? "4 bước khép kín" : "4-step closed-loop"}</span>
           </div>
         </div>
 

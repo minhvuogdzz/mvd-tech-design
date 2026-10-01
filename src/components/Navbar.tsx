@@ -11,9 +11,10 @@ import {
   Sun,
   Moon,
   Laptop,
+  Languages,
 } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
-import { useSiteConfig } from "@/context/SiteConfigContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface NavbarProps {
   version: string;
@@ -23,8 +24,8 @@ export function Navbar({ version }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appsDropdownOpen, setAppsDropdownOpen] = useState(false);
   const location = useLocation();
-  const { mode, setMode, isDark } = useTheme();
-  const { config, zaloUrl } = useSiteConfig();
+  const { mode, setMode } = useTheme();
+  const { language, setLanguage, t, isVi } = useLanguage();
 
   const cycleTheme = () => {
     if (mode === "system") {
@@ -36,6 +37,10 @@ export function Navbar({ version }: NavbarProps) {
     }
   };
 
+  const toggleLanguage = () => {
+    setLanguage(language === "vi" ? "en" : "vi");
+  };
+
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
     if (path !== "/" && location.pathname.startsWith(path)) return true;
@@ -43,31 +48,32 @@ export function Navbar({ version }: NavbarProps) {
   };
 
   const navLinks = [
-    { label: "Tổng quan", path: "/" },
-    { label: "Hiệu năng", path: "/benchmark" },
-    { label: "Bảng giá", path: "/pricing" },
-    { label: "Tải về", path: "/download" },
-    { label: "Hỗ trợ", path: "/support" },
+    { label: t("nav.overview"), path: "/" },
+    { label: t("nav.benchmark"), path: "/benchmark" },
+    { label: t("nav.pricing"), path: "/pricing" },
+    { label: t("nav.download"), path: "/download" },
+    { label: t("nav.support"), path: "/support" },
+    { label: t("nav.about"), path: "/about" },
   ];
 
   const appItems = [
     {
       name: "Photo Picker Pro",
-      desc: "Lọc RAW 33MP-61MP 60fps & Loupe 100%",
+      desc: isVi ? "Lọc RAW 33MP-61MP 60fps & Loupe 100%" : "Cull RAW 33MP-61MP at 60fps with 100% Loupe",
       path: "/apps/photo-picker",
       icon: <Layers size={15} className="text-blue-500" />,
       tag: "CORE CULL",
     },
     {
       name: "Contact The Sheet",
-      desc: "Tự động hóa bóc tách Google Sheets & Drive",
+      desc: isVi ? "Tự động hóa bóc tách Google Sheets & Drive" : "Google Sheets & Drive code automation",
       path: "/apps/contact-the-sheet",
       icon: <FileSpreadsheet size={15} className="text-blue-500" />,
       tag: "AUTOMATION",
     },
     {
       name: "Photo Counter",
-      desc: "Đối soát hợp đồng & kiểm kê số lượng file",
+      desc: isVi ? "Đối soát hợp đồng & kiểm kê số lượng file" : "Contract audit & deep folder inspection",
       path: "/apps/photo-counter",
       icon: <FolderSync size={15} className="text-blue-500" />,
       tag: "AUDIT",
@@ -108,7 +114,7 @@ export function Navbar({ version }: NavbarProps) {
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
-              <span>Bộ Ứng Dụng</span>
+              <span>{t("nav.apps")}</span>
               <ChevronDown
                 size={12}
                 className={`transition-transform duration-150 ${appsDropdownOpen ? "rotate-180" : ""}`}
@@ -123,25 +129,25 @@ export function Navbar({ version }: NavbarProps) {
                       key={item.path}
                       to={item.path}
                       onClick={() => setAppsDropdownOpen(false)}
-                      className={`p-2.5 rounded-xl flex items-start gap-2.5 transition-colors group ${
+                      className={`flex items-start gap-3 p-2.5 rounded-xl transition-colors ${
                         location.pathname === item.path
-                          ? "bg-blue-50 dark:bg-blue-600/15 border border-blue-200 dark:border-blue-500/30"
-                          : "hover:bg-slate-50 dark:hover:bg-white/[0.04]"
+                          ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                          : "hover:bg-slate-100 dark:hover:bg-white/[0.04] text-slate-700 dark:text-slate-300"
                       }`}
                     >
-                      <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/[0.06] mt-0.5">
+                      <div className="p-2 rounded-lg bg-slate-100 dark:bg-white/[0.06] mt-0.5 shrink-0">
                         {item.icon}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-300">
+                      <div className="space-y-0.5 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-semibold text-xs truncate text-slate-900 dark:text-white">
                             {item.name}
                           </span>
-                          <span className="text-[8px] font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1 py-0.2 rounded">
+                          <span className="text-[9px] font-mono px-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 font-medium">
                             {item.tag}
                           </span>
                         </div>
-                        <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 truncate">
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                           {item.desc}
                         </p>
                       </div>
@@ -153,7 +159,7 @@ export function Navbar({ version }: NavbarProps) {
           </div>
         </div>
 
-        {/* Center: Clean Nav Links */}
+        {/* Center: Main Nav Links */}
         <nav className="hidden md:flex items-center gap-6 text-xs font-medium">
           {navLinks.map((link) => (
             <Link
@@ -161,7 +167,7 @@ export function Navbar({ version }: NavbarProps) {
               to={link.path}
               className={`transition-colors py-1 ${
                 isActive(link.path)
-                  ? "text-blue-600 dark:text-blue-400 font-bold"
+                  ? "text-blue-600 dark:text-blue-400 font-semibold"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
@@ -170,54 +176,67 @@ export function Navbar({ version }: NavbarProps) {
           ))}
         </nav>
 
-        {/* Right: Quick Action Buttons & Theme Switcher */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Right: Language Switcher, Theme Switcher & Download CTA */}
+        <div className="hidden md:flex items-center gap-2.5">
+          {/* Language Switcher Button */}
+          <button
+            onClick={toggleLanguage}
+            className="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-white/[0.08] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-slate-700 dark:text-slate-300 font-mono text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm"
+            title={isVi ? "Chuyển sang Tiếng Anh (Switch to English)" : "Chuyển sang Tiếng Việt (Switch to Vietnamese)"}
+          >
+            <Languages size={14} className="text-blue-500" />
+            <span className={isVi ? "text-blue-600 dark:text-blue-400" : "text-slate-400"}>VI</span>
+            <span className="text-[10px] text-slate-300 dark:text-slate-600">/</span>
+            <span className={!isVi ? "text-blue-600 dark:text-blue-400" : "text-slate-400"}>EN</span>
+          </button>
+
           {/* Theme Switcher Button */}
           <button
             onClick={cycleTheme}
             className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.06] transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-medium"
-            title={`Giao diện hiện tại: ${mode === "system" ? "Ăn theo hệ thống" : mode === "light" ? "Giao diện Sáng" : "Giao diện Tối"} (Nhấn để chuyển)`}
+            title={`Theme: ${mode === "system" ? t("nav.theme.system") : mode === "light" ? t("nav.theme.light") : t("nav.theme.dark")}`}
           >
             {mode === "system" ? (
               <>
                 <Laptop size={15} className="text-blue-500" />
-                <span className="text-[11px] font-mono hidden lg:inline">Tự động</span>
+                <span className="text-[11px] font-mono hidden lg:inline">{t("nav.theme.system")}</span>
               </>
             ) : mode === "light" ? (
               <>
                 <Sun size={15} className="text-amber-500" />
-                <span className="text-[11px] font-mono hidden lg:inline">Sáng</span>
+                <span className="text-[11px] font-mono hidden lg:inline">{t("nav.theme.light")}</span>
               </>
             ) : (
               <>
                 <Moon size={15} className="text-blue-400" />
-                <span className="text-[11px] font-mono hidden lg:inline">Tối</span>
+                <span className="text-[11px] font-mono hidden lg:inline">{t("nav.theme.dark")}</span>
               </>
             )}
           </button>
-
-          <Link
-            to="/pricing"
-            className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-          >
-            Bảng giá
-          </Link>
 
           <Link
             to="/download"
             className="text-xs font-semibold px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-150 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shadow-sm"
           >
             <Download size={14} className="stroke-[2.5]" />
-            <span>Tải v{version}</span>
+            <span>{t("nav.downloadBtn")}{version}</span>
           </Link>
         </div>
 
-        {/* Mobile Hamburger & Theme toggle */}
-        <div className="md:hidden flex items-center gap-1">
+        {/* Mobile Controls */}
+        <div className="md:hidden flex items-center gap-1.5">
+          {/* Mobile Language Switcher */}
+          <button
+            onClick={toggleLanguage}
+            className="px-2 py-1 rounded-lg border border-slate-200 dark:border-white/[0.08] text-[11px] font-mono font-bold text-slate-700 dark:text-slate-300"
+          >
+            {language.toUpperCase()}
+          </button>
+
           <button
             onClick={cycleTheme}
             className="p-2 rounded-lg text-slate-600 dark:text-slate-400"
-            title="Đổi giao diện"
+            title="Đổi theme"
           >
             {mode === "system" ? (
               <Laptop size={16} />
@@ -231,7 +250,7 @@ export function Navbar({ version }: NavbarProps) {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-            aria-label="Toggle Navigation"
+            aria-label="Menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -240,39 +259,44 @@ export function Navbar({ version }: NavbarProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0A0D15] px-4 py-4 space-y-3 text-xs shadow-lg">
-          <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">
-            Ứng dụng chuyên biệt
-          </div>
-          <div className="space-y-1 pl-1">
+        <div className="md:hidden border-b border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#07090E] px-4 py-4 space-y-4 animate-in slide-in-from-top duration-150">
+          <div className="space-y-1">
+            <div className="px-3 py-1 text-[11px] font-mono text-slate-400 uppercase tracking-wider">
+              {t("nav.apps")}
+            </div>
             {appItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`py-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center justify-between ${
-                  location.pathname === item.path ? "text-blue-600 dark:text-blue-400 font-bold" : ""
-                }`}
+                className="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/[0.04] text-xs font-medium text-slate-800 dark:text-slate-200"
               >
-                <span>{item.name}</span>
-                <span className="text-[8px] font-mono text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1 py-0.5 rounded">
+                <div className="flex items-center gap-2.5">
+                  {item.icon}
+                  <span>{item.name}</span>
+                </div>
+                <span className="text-[9px] font-mono px-1 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400">
                   {item.tag}
                 </span>
               </Link>
             ))}
           </div>
 
-          <div className="border-t border-slate-100 dark:border-white/[0.06] pt-2 text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">
-            Điều hướng
-          </div>
-          <div className="space-y-1 pl-1">
+          <div className="h-px bg-slate-200 dark:bg-white/[0.06]" />
+
+          <div className="space-y-1">
+            <div className="px-3 py-1 text-[11px] font-mono text-slate-400 uppercase tracking-wider">
+              {isVi ? "Trang Chính" : "Main Pages"}
+            </div>
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 ${
-                  isActive(link.path) ? "text-blue-600 dark:text-blue-400 font-bold" : ""
+                className={`block px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
+                  isActive(link.path)
+                    ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold"
+                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/[0.04]"
                 }`}
               >
                 {link.label}
@@ -280,13 +304,14 @@ export function Navbar({ version }: NavbarProps) {
             ))}
           </div>
 
-          <div className="pt-2 border-t border-slate-100 dark:border-white/[0.08]">
+          <div className="pt-2">
             <Link
               to="/download"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-colors duration-150"
+              className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-sm"
             >
-              <Download size={14} /> Tải MVD Studio v{version}
+              <Download size={14} />
+              <span>{t("nav.downloadBtn")}{version}</span>
             </Link>
           </div>
         </div>

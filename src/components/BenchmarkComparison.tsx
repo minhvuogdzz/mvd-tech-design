@@ -10,58 +10,60 @@ import {
   Gauge,
 } from "lucide-react";
 import { useSiteConfig } from "@/context/SiteConfigContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function BenchmarkComparison() {
   const { config } = useSiteConfig();
+  const { t, isVi } = useLanguage();
 
   const comparisons = [
     {
-      metric: "Thời gian khởi động (Cold Boot)",
+      metric: t("benchmark.row1.metric"),
       icon: <Gauge size={14} className="text-blue-500" />,
-      lrc: "10 — 15 giây",
-      mvd: "0.25 giây (Tức thì)",
+      lrc: isVi ? "10 — 15 giây" : "10 — 15 seconds",
+      mvd: isVi ? "0.25 giây (Tức thì)" : "0.25 seconds (Instant)",
       winner: "mvd",
-      note: "MVD viết bằng Rust/Tauri native, không gánh nặng tải catalog nặng nề.",
+      note: t("benchmark.row1.note"),
     },
     {
-      metric: "Bộ nhớ RAM khi nạp 2,000 file RAW",
+      metric: t("benchmark.row2.metric"),
       icon: <Cpu size={14} className="text-blue-500" />,
       lrc: "4,800 MB — 8,500 MB",
       mvd: "118 MB — 190 MB",
       winner: "mvd",
-      note: "Nhẹ hơn 40 lần. Hoạt động mượt mà ngay cả trên MacBook 8GB RAM.",
+      note: t("benchmark.row2.note"),
     },
     {
-      metric: "Thời gian chờ render ảnh trước khi lọc",
+      metric: t("benchmark.row3.metric"),
       icon: <HardDrive size={14} className="text-blue-500" />,
-      lrc: "12 — 18 phút (Tạo 1:1 Previews)",
-      mvd: "0.00 giây (Không cần chờ)",
+      lrc: isVi ? "12 — 18 phút (Tạo 1:1 Previews)" : "12 — 18 min (Build 1:1 Previews)",
+      mvd: isVi ? "0.00 giây (Không cần chờ)" : "0.00s (Zero wait)",
       winner: "mvd",
-      note: "Giải mã trực tiếp embedded preview từ phần cứng qua LibRaw GPU pipeline.",
+      note: t("benchmark.row3.note"),
     },
     {
-      metric: "Độ trễ lướt ảnh (Frame Switch Lag)",
+      metric: t("benchmark.row4.metric"),
       icon: <Zap size={14} className="text-blue-500" />,
-      lrc: "350ms — 800ms / ảnh",
-      mvd: "< 16ms (60 FPS mượt mà)",
+      lrc: isVi ? "350ms — 800ms / ảnh" : "350ms — 800ms / photo",
+      mvd: isVi ? "< 16ms (60 FPS mượt mà)" : "< 16ms (Smooth 60 FPS)",
       winner: "mvd",
-      note: "Chuyển ảnh nhanh như bấm phím cơ, không bị khựng đơ khung hình.",
+      note: t("benchmark.row4.note"),
     },
     {
-      metric: "Khớp mã khách chọn từ Google Sheets",
+      metric: t("benchmark.row5.metric"),
       icon: <ShieldAlert size={14} className="text-blue-500" />,
-      lrc: "Không hỗ trợ (Phải dò tay từng số)",
-      mvd: "Tự động bóc tách trong 0.4 giây",
+      lrc: isVi ? "Không hỗ trợ (Phải dò tay từng số)" : "Unsupported (Manual eyeball search)",
+      mvd: isVi ? "Tự động bóc tách trong 0.4 giây" : "Auto-extracted in 0.4 seconds",
       winner: "mvd",
-      note: "Regex engine tự nhận diện dải số liên tiếp và gom trọn file RAW gốc.",
+      note: t("benchmark.row5.note"),
     },
     {
-      metric: "Thời lượng pin khi chụp ngoại cảnh",
+      metric: t("benchmark.row6.metric"),
       icon: <BatteryCharging size={14} className="text-blue-500" />,
-      lrc: "Tốn 25 — 35% pin / giờ (Quạt hú)",
-      mvd: "Chỉ tốn 6 — 8% pin / giờ (Máy mát)",
+      lrc: isVi ? "Tốn 25 — 35% pin / giờ (Quạt hú)" : "Drains 25 — 35% battery/hr (Fans screaming)",
+      mvd: isVi ? "Chỉ tốn 6 — 8% pin / giờ (Máy mát)" : "Only 6 — 8% battery/hr (Runs cool)",
       winner: "mvd",
-      note: "Không ép CPU render dư thừa, tối ưu tuyệt đối cho thợ đi làm xa nguồn điện.",
+      note: t("benchmark.row6.note"),
     },
   ];
 
@@ -73,19 +75,19 @@ export function BenchmarkComparison() {
           <div className="space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
               <Gauge size={11} />
-              <span>Đo Lường Hiệu Năng Thực Tế</span>
+              <span>{t("benchmark.badge")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              {config.benchmarkTitle}
+              {isVi ? config.benchmarkTitle : "Real-World Benchmark: MVD vs Lightroom Classic"}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-              {config.benchmarkNotes}
+              {isVi ? config.benchmarkNotes : "Measured on a typical real-world wedding shoot (2,000 uncompressed 33MP Sony A7 IV RAW files). Native hardware decoding bypasses catalog rendering bottlenecks."}
             </p>
           </div>
 
           <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] text-xs text-slate-600 dark:text-slate-400 font-mono shadow-sm self-start md:self-auto">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Thử nghiệm phần cứng thực địa</span>
+            <span>{t("benchmark.verified")}</span>
           </div>
         </div>
 
@@ -93,10 +95,10 @@ export function BenchmarkComparison() {
         <div className="rounded-3xl border border-slate-200 dark:border-white/[0.1] bg-white dark:bg-[#0A0E18] overflow-hidden shadow-sm">
           {/* Table Header */}
           <div className="grid grid-cols-12 bg-slate-100 dark:bg-[#0E1526] px-6 py-4 border-b border-slate-200 dark:border-white/[0.08] text-xs font-mono font-bold">
-            <div className="col-span-5 text-slate-700 dark:text-slate-300">Tiêu Chí Đo Lường</div>
-            <div className="col-span-3 text-slate-500 dark:text-slate-400 text-center">Adobe Lightroom Classic</div>
+            <div className="col-span-5 text-slate-700 dark:text-slate-300">{t("benchmark.metricCol")}</div>
+            <div className="col-span-3 text-slate-500 dark:text-slate-400 text-center">{t("benchmark.lrcCol")}</div>
             <div className="col-span-4 text-blue-600 dark:text-blue-400 text-center flex items-center justify-center gap-2">
-              <span>MVD Photo Picker Pro</span>
+              <span>{t("benchmark.mvdCol")}</span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 font-mono">
                 Native Engine
               </span>
@@ -136,13 +138,13 @@ export function BenchmarkComparison() {
           <div className="px-6 py-4 bg-slate-50 dark:bg-[#070A12] border-t border-slate-200 dark:border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600 dark:text-slate-400 font-mono">
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
-              <span>Kết luận: Tiết kiệm trung bình 80 — 120 phút cho mỗi ca lọc ảnh tiệc cưới.</span>
+              <span>{t("benchmark.conclusion")}</span>
             </div>
             <Link
               to="/download"
               className="text-blue-600 dark:text-blue-400 hover:text-blue-500 font-bold flex items-center gap-1.5 transition-colors duration-150 whitespace-nowrap"
             >
-              <span>Tải bản cài đặt về test thực tế</span>
+              <span>{t("benchmark.downloadTest")}</span>
               <span>&rarr;</span>
             </Link>
           </div>

@@ -4,6 +4,7 @@ import { LatestRelease } from "@/types/release";
 import { Hero } from "@/components/Hero";
 import { StudioWorkbench } from "@/components/StudioWorkbench";
 import { StudioWorkflow } from "@/components/StudioWorkflow";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Layers,
   FileSpreadsheet,
@@ -22,6 +23,8 @@ interface HomePageProps {
 }
 
 export function HomePage({ release }: HomePageProps) {
+  const { t, isVi } = useLanguage();
+
   return (
     <div className="space-y-24 pb-20 ambient-glow transition-colors duration-150">
       {/* 1. Flagship Hero with spacious padding */}
@@ -38,20 +41,20 @@ export function HomePage({ release }: HomePageProps) {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 dark:border-white/[0.08] pb-6">
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[11px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-              <span>Hệ Thống Ứng Dụng Chuyên Sâu</span>
+              <span>{t("home.suite.badge")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Tự Động Hóa Toàn Diện Mọi Khâu Cho Studio Ảnh
+              {t("home.suite.title")}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              Thiết kế dành riêng cho thợ ảnh cưới, tiệc, phóng sự và sự kiện. Không phải một công cụ chung chung, mỗi module giải quyết chính xác từng điểm nghẽn trong công việc hàng ngày của bạn.
+              {t("home.suite.subtitle")}
             </p>
           </div>
           <Link
             to="/download"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-500 transition-colors shrink-0"
           >
-            <span>Tải trọn bộ v{release.version}</span>
+            <span>{t("home.suite.downloadAll")}{release.version}</span>
             <ArrowRight size={13} />
           </Link>
         </div>
@@ -72,24 +75,24 @@ export function HomePage({ release }: HomePageProps) {
             </div>
 
             <h4 className="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-200 leading-snug">
-              Lọc 3,000 ảnh RAW trong 15 phút. Soi nét mắt 100% không giật lag.
+              {t("home.cull.heading")}
             </h4>
 
             <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              Giải mã trực tiếp embedded preview từ phần cứng bằng LibRaw và GPU Metal/DirectX. Loại bỏ thời gian chờ dựng Smart Previews của Lightroom. Quạt máy tính không hú, pin dùng cả ngày ngoại cảnh.
+              {t("home.cull.desc")}
             </p>
 
             <div className="grid grid-cols-3 gap-3 pt-2 font-mono text-xs">
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#090D16] border border-slate-200 dark:border-white/[0.04]">
-                <span className="text-[10px] text-slate-500 block">Độ trễ lướt ảnh</span>
+                <span className="text-[10px] text-slate-500 block">{isVi ? "Độ trễ lướt ảnh" : "Switch latency"}</span>
                 <span className="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">&lt;16ms (60 FPS)</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#090D16] border border-slate-200 dark:border-white/[0.04]">
-                <span className="text-[10px] text-slate-500 block">Bộ nhớ RAM</span>
+                <span className="text-[10px] text-slate-500 block">{isVi ? "Bộ nhớ RAM" : "RAM footprint"}</span>
                 <span className="text-blue-600 dark:text-blue-400 font-bold tabular-nums">118 MB RSS</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#090D16] border border-slate-200 dark:border-white/[0.04]">
-                <span className="text-[10px] text-slate-500 block">Phím tắt soi nét</span>
+                <span className="text-[10px] text-slate-500 block">{isVi ? "Phím tắt soi nét" : "Loupe shortcut"}</span>
                 <span className="text-amber-600 dark:text-amber-400 font-bold">[Z] 1:1 Loupe</span>
               </div>
             </div>
@@ -99,7 +102,7 @@ export function HomePage({ release }: HomePageProps) {
                 to="/apps/photo-picker"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors duration-150 whitespace-nowrap shadow-sm"
               >
-                <span>Xem chi tiết Photo Picker Pro</span>
+                <span>{t("home.cull.cta")}</span>
                 <ArrowRight size={13} />
               </Link>
             </div>
@@ -149,20 +152,20 @@ export function HomePage({ release }: HomePageProps) {
               <div className="space-y-1.5">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Contact The Sheet</h3>
                 <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Bóc tách mã chọn từ Google Sheets trong 0.4s
+                  {t("home.sheets.heading")}
                 </h4>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed pt-1">
-                  Chấm dứt việc căng mắt ngồi tìm từng số ảnh khách gửi trên Zalo hay Excel. Nhận diện chuẩn dải số liên tiếp (4901..4905) và gom trọn vẹn file RAW gốc vào thư mục xuất file.
+                  {t("home.sheets.desc")}
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#090D16] border border-slate-200 dark:border-white/[0.04] space-y-1 text-xs font-mono">
                 <div className="flex justify-between text-slate-500 dark:text-slate-400 text-[11px]">
-                  <span>Độ chính xác:</span>
+                  <span>{isVi ? "Độ chính xác:" : "Accuracy:"}</span>
                   <span className="text-emerald-600 dark:text-emerald-400 font-bold">100% (Zero Missing Files)</span>
                 </div>
                 <div className="flex justify-between text-slate-500 dark:text-slate-400 text-[11px]">
-                  <span>Hỗ trợ nguồn:</span>
+                  <span>{isVi ? "Hỗ trợ nguồn:" : "Supported sources:"}</span>
                   <span className="text-slate-700 dark:text-slate-200">Google Sheets, Drive, Zalo, Excel</span>
                 </div>
               </div>
@@ -173,7 +176,7 @@ export function HomePage({ release }: HomePageProps) {
                 to="/apps/contact-the-sheet"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 transition-colors"
               >
-                <span>Khám phá Contact The Sheet</span>
+                <span>{t("home.sheets.cta")}</span>
                 <ArrowRight size={13} />
               </Link>
             </div>
@@ -194,21 +197,21 @@ export function HomePage({ release }: HomePageProps) {
               <div className="space-y-1.5">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">Photo Counter</h3>
                 <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Đối soát hợp đồng & kiểm kê thư mục đệ quy
+                  {t("home.counter.heading")}
                 </h4>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed pt-1">
-                  Đếm chính xác file RAW, PSD retouch và JPG xuất in theo từng thư mục con. Đảm bảo đúng số lượng cam kết gói chụp trước khi bàn giao hồ sơ cho khách hàng.
+                  {t("home.counter.desc")}
                 </p>
               </div>
 
               <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#090D16] border border-slate-200 dark:border-white/[0.04] space-y-1 text-xs font-mono">
                 <div className="flex justify-between text-slate-500 dark:text-slate-400 text-[11px]">
-                  <span>Quét thư mục con:</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">Không giới hạn cấp đệ quy</span>
+                  <span>{isVi ? "Quét thư mục con:" : "Subdirectory scan:"}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">{isVi ? "Không giới hạn cấp đệ quy" : "Unlimited recursive depth"}</span>
                 </div>
                 <div className="flex justify-between text-slate-500 dark:text-slate-400 text-[11px]">
-                  <span>Biên bản nghiệm thu:</span>
-                  <span className="text-slate-700 dark:text-slate-200">1-Click xuất báo cáo file</span>
+                  <span>{isVi ? "Biên bản nghiệm thu:" : "Handover report:"}</span>
+                  <span className="text-slate-700 dark:text-slate-200">{isVi ? "1-Click xuất báo cáo file" : "1-Click instant file export"}</span>
                 </div>
               </div>
             </div>
@@ -218,7 +221,7 @@ export function HomePage({ release }: HomePageProps) {
                 to="/apps/photo-counter"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 transition-colors"
               >
-                <span>Khám phá Photo Counter</span>
+                <span>{t("home.counter.cta")}</span>
                 <ArrowRight size={13} />
               </Link>
             </div>
@@ -235,13 +238,13 @@ export function HomePage({ release }: HomePageProps) {
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[11px] font-mono font-bold text-blue-600 dark:text-blue-300">
               <Gauge size={12} />
-              <span>Benchmark Độc Lập</span>
+              <span>{t("home.banner.badge")}</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-              Nhanh hơn 40 lần và nhẹ hơn 80% so với Adobe Lightroom Classic.
+              {t("home.banner.title")}
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              MVD Photo Picker Pro loại bỏ các bước render trung gian, nạp thẳng embedded preview vào texture GPU Metal và DirectX. Máy chạy mát rượi và tiết kiệm pin khi chụp ngoại cảnh.
+              {t("home.banner.desc")}
             </p>
           </div>
 
@@ -249,28 +252,28 @@ export function HomePage({ release }: HomePageProps) {
             to="/benchmark"
             className="px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-2 shrink-0 transition-colors duration-150 whitespace-nowrap shadow-sm cursor-pointer"
           >
-            <span>Xem Bảng So Sánh Chi Tiết</span>
+            <span>{t("home.banner.btn")}</span>
             <ArrowRight size={14} />
           </Link>
         </div>
       </section>
 
-      {/* 5. Local-First & Air-Gapped Trust Guarantee */}
+      {/* 6. Local-First & Air-Gapped Trust Guarantee */}
       <section className="py-6 max-w-6xl mx-auto px-4 sm:px-6">
         <div className="p-8 rounded-3xl bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.06] text-center max-w-3xl mx-auto space-y-4 shadow-sm">
           <div className="inline-flex p-3 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
             <ShieldCheck size={26} />
           </div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-            Cam Kết Bảo Mật Tuyệt Đối (Air-Gapped Local-First)
+            {t("home.trust.title")}
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-xl mx-auto">
-            100% dữ liệu hình ảnh và mã khách hàng được xử lý cục bộ trên ổ cứng NVMe / SSD máy tính của bạn. MVD Tech & Design không tải bất kỳ file nào lên đám mây, bảo đảm an toàn dữ liệu khách hàng.
+            {t("home.trust.desc")}
           </p>
           <div className="pt-2 flex flex-wrap items-center justify-center gap-5 text-xs font-mono text-slate-500 dark:text-slate-400">
             <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-500" /> 0 byte cloud upload</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-500" /> Hoạt động offline 100%</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-500" /> Bảo mật local tuyệt đối</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-500" /> {isVi ? "Hoạt động offline 100%" : "100% offline operation"}</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-500" /> {isVi ? "Bảo mật local tuyệt đối" : "Strict local privacy"}</span>
           </div>
         </div>
       </section>

@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ShieldCheck, ExternalLink } from "lucide-react";
 import { useSiteConfig } from "@/context/SiteConfigContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Footer() {
   const { config, zaloUrl } = useSiteConfig();
+  const { t, isVi } = useLanguage();
 
   return (
     <footer className="border-t border-slate-200 dark:border-white/[0.08] bg-slate-100 dark:bg-[#05070C] text-slate-600 dark:text-slate-400 text-xs py-14 transition-colors duration-150">
@@ -23,18 +25,18 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-              Hệ sinh thái phần mềm lọc ảnh RAW và tự động hóa trả file chuyên nghiệp cho studio ảnh cưới, phóng sự, kỷ yếu và freelancer toàn quốc.
+              {t("footer.desc")}
             </p>
             <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-mono">
               <ShieldCheck size={12} className="text-emerald-500" />
-              <span>Bản quyền phát triển độc quyền</span>
+              <span>{t("footer.exclusive")}</span>
             </div>
           </div>
 
           {/* Apps */}
           <div className="space-y-2 text-[11px]">
             <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[10px]">
-              Sản Phẩm Chuyên Sâu
+              {t("footer.col.products")}
             </h4>
             <ul className="space-y-2 text-slate-600 dark:text-slate-400">
               <li>
@@ -54,7 +56,7 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/benchmark" className="hover:text-blue-500 transition-colors">
-                  So sánh hiệu năng vs Lightroom
+                  {isVi ? "So sánh hiệu năng vs Lightroom" : "Benchmark vs Lightroom"}
                 </Link>
               </li>
             </ul>
@@ -63,27 +65,32 @@ export function Footer() {
           {/* Links */}
           <div className="space-y-2 text-[11px]">
             <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[10px]">
-              Tài Nguyên & Bản Quyền
+              {t("footer.col.resources")}
             </h4>
             <ul className="space-y-2 text-slate-600 dark:text-slate-400">
               <li>
-                <Link to="/download" className="hover:text-blue-500 transition-colors">
-                  Tải bản macOS Apple Silicon (M1—M4)
+                <Link to="/about" className="hover:text-blue-500 transition-colors font-semibold text-blue-600 dark:text-blue-400">
+                  {t("footer.terms")}
                 </Link>
               </li>
               <li>
                 <Link to="/download" className="hover:text-blue-500 transition-colors">
-                  Tải bản macOS Intel & Windows 64-bit
+                  {isVi ? "Tải bản macOS Apple Silicon (M1—M4)" : "Download for macOS Apple Silicon"}
+                </Link>
+              </li>
+              <li>
+                <Link to="/download" className="hover:text-blue-500 transition-colors">
+                  {isVi ? "Tải bản macOS Intel & Windows 64-bit" : "Download for Mac Intel & Windows 64-bit"}
                 </Link>
               </li>
               <li>
                 <Link to="/pricing" className="hover:text-blue-500 transition-colors">
-                  Bảng giá tham khảo
+                  {t("pricing.title")}
                 </Link>
               </li>
               <li>
                 <Link to="/support" className="hover:text-blue-500 transition-colors">
-                  Hướng dẫn cài đặt & FAQ
+                  {isVi ? "Hướng dẫn cài đặt & FAQ" : "Installation Guide & FAQ"}
                 </Link>
               </li>
             </ul>
@@ -92,7 +99,7 @@ export function Footer() {
           {/* Support */}
           <div className="space-y-2 text-[11px]">
             <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[10px]">
-              Kênh Kỹ Thuật Trực Tiếp
+              {t("footer.col.support")}
             </h4>
             <ul className="space-y-2 text-slate-600 dark:text-slate-400 font-mono text-[11px]">
               <li>
@@ -106,19 +113,22 @@ export function Footer() {
                   {config.phoneFormatted}
                 </a>
               </li>
-              <li>Hỗ trợ từ xa: UltraViewer / AnyDesk</li>
-              <li>Khung giờ: 8:00 — 23:00 hàng ngày</li>
-              <li>Kiến trúc: Local-First Air-Gapped</li>
+              <li>{isVi ? "Hỗ trợ từ xa: UltraViewer / AnyDesk" : "Remote Support: UltraViewer / AnyDesk"}</li>
+              <li>{isVi ? "Khung giờ: 8:00 — 23:00 hàng ngày" : "Hours: 8:00 — 23:00 daily"}</li>
+              <li>{isVi ? "Kiến trúc: Local-First Air-Gapped" : "Architecture: Local-First Air-Gapped"}</li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
         <div className="pt-6 border-t border-slate-200 dark:border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-slate-500 font-mono">
-          <p>&copy; {new Date().getFullYear()} MVD Tech & Design Studio. Toàn bộ quyền được bảo lưu.</p>
+          <p>&copy; {new Date().getFullYear()} MVD Tech & Design Studio. {t("footer.rights")}</p>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1 font-sans">
-              Phát triển bởi <strong className="text-slate-800 dark:text-slate-300">Dương Minh Vương</strong>
+              {t("footer.developedBy")}{" "}
+              <strong className="text-slate-800 dark:text-slate-200 font-semibold">
+                Vuong Dev - The Dev House Group
+              </strong>
             </span>
           </div>
         </div>

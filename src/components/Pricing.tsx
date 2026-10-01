@@ -2,67 +2,101 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Check, PhoneCall, Download, Info, ShieldCheck } from "lucide-react";
 import { useSiteConfig } from "@/context/SiteConfigContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Pricing() {
   const { config, zaloUrl, telUrl } = useSiteConfig();
+  const { t, isVi } = useLanguage();
 
   const plans = [
     {
       id: "trial",
-      name: "Bản Dùng Thử",
-      price: "0đ",
-      period: "7 ngày trải nghiệm",
-      badge: "MIỄN PHÍ",
+      name: isVi ? "Bản Dùng Thử" : "Evaluation Trial",
+      price: isVi ? "0đ" : "$0",
+      period: isVi ? "7 ngày trải nghiệm" : "7 days evaluation",
+      badge: isVi ? "MIỄN PHÍ" : "FREE",
       highlight: false,
-      desc: "Trải nghiệm đầy đủ 100% tính năng của hệ sinh thái MVD Studio trước khi quyết định đầu tư bản quyền.",
-      features: [
-        "Đầy đủ 4 ứng dụng trong bộ cài đặt",
-        "Không giới hạn số lượng ảnh lọc",
-        "Tự động hóa Google Sheets & Drive",
-        "Thống kê ảnh Photo Counter",
-        "Hỗ trợ kỹ thuật qua Zalo",
-      ],
-      cta: "Tải Dùng Thử Ngay",
+      desc: isVi
+        ? "Trải nghiệm đầy đủ 100% tính năng của hệ sinh thái MVD Studio trước khi quyết định đầu tư bản quyền."
+        : "Evaluate 100% full features of the MVD Studio ecosystem before deciding on a studio investment.",
+      features: isVi
+        ? [
+            "Đầy đủ 4 ứng dụng trong bộ cài đặt",
+            "Không giới hạn số lượng ảnh lọc",
+            "Tự động hóa Google Sheets & Drive",
+            "Thống kê ảnh Photo Counter",
+            "Hỗ trợ kỹ thuật qua Zalo",
+          ]
+        : [
+            "Full 4 applications in 1 unified installer",
+            "Unlimited photo culling capacity",
+            "Google Sheets & Drive automation",
+            "Photo Counter audit & contract tools",
+            "Technical onboarding via Zalo/Remote",
+          ],
+      cta: t("pricing.trialCta"),
       link: "/download",
       isExternal: false,
     },
     {
       id: "pro_annual",
-      name: "Bản Quyền 1 Năm",
-      price: "499.000đ",
-      period: "12 tháng sử dụng",
-      badge: "KHUYÊN DÙNG",
+      name: isVi ? "Bản Quyền 1 Năm" : "1-Year License",
+      price: isVi ? "499.000đ" : "499,000 VND",
+      period: isVi ? "12 tháng sử dụng" : "12 months access",
+      badge: isVi ? "KHUYÊN DÙNG" : "RECOMMENDED",
       highlight: true,
-      desc: "Lựa chọn tiết kiệm chi phí tối ưu dành cho thợ ảnh tự do (freelancer) và studio quy mô vừa.",
-      features: [
-        "Sử dụng không giới hạn 365 ngày",
-        "Trọn bộ Photo Picker Pro + Contact The Sheet",
-        "Mở khóa toàn bộ kho Presets & Typography",
-        "Cập nhật miễn phí mọi tính năng mới trong năm",
-        "Hỗ trợ cài đặt từ xa qua UltraViewer / AnyDesk",
-        "Ưu tiên hỗ trợ kỹ thuật 24/7",
-      ],
-      cta: "Liên Hệ Tư Vấn Gói 1 Năm",
+      desc: isVi
+        ? "Lựa chọn tiết kiệm chi phí tối ưu dành cho thợ ảnh tự do (freelancer) và studio quy mô vừa."
+        : "Cost-effective optimal plan tailored for freelance photographers and medium-sized studios.",
+      features: isVi
+        ? [
+            "Sử dụng không giới hạn 365 ngày",
+            "Trọn bộ Photo Picker Pro + Contact The Sheet",
+            "Mở khóa toàn bộ kho Presets & Typography",
+            "Cập nhật miễn phí mọi tính năng mới trong năm",
+            "Hỗ trợ cài đặt từ xa qua UltraViewer / AnyDesk",
+            "Ưu tiên hỗ trợ kỹ thuật 24/7",
+          ]
+        : [
+            "Unlimited usage for 365 days",
+            "Full suite: Photo Picker Pro + Contact The Sheet",
+            "Unlock all Presets & Typography resources",
+            "Free updates for all new features throughout the year",
+            "Remote installation via UltraViewer / AnyDesk",
+            "Priority 24/7 technical assistance",
+          ],
+      cta: isVi ? "Liên Hệ Tư Vấn Gói 1 Năm" : "Consult 1-Year Plan",
       link: zaloUrl,
       isExternal: true,
     },
     {
       id: "lifetime",
-      name: "Bản Quyền Vĩnh Viễn",
-      price: "999.000đ",
-      period: "Sở hữu trọn đời",
-      badge: "SỞ HỮU MÃI MÃI",
+      name: isVi ? "Bản Quyền Vĩnh Viễn" : "Lifetime License",
+      price: isVi ? "999.000đ" : "999,000 VND",
+      period: isVi ? "Sở hữu trọn đời" : "Lifetime ownership",
+      badge: isVi ? "SỞ HỮU MÃI MÃI" : "LIFETIME",
       highlight: false,
-      desc: "Đầu tư một lần duy nhất, sở hữu mãi mãi và nhận toàn bộ bản nâng cấp lớn trong tương lai.",
-      features: [
-        "Sở hữu vĩnh viễn không thời hạn",
-        "Đầy đủ mọi ứng dụng hiện tại & tương lai",
-        "Miễn phí mọi bản nâng cấp v3.x, v4.x trọn đời",
-        "Mở khóa độc quyền kho tài nguyên VIP",
-        "Hỗ trợ chuyển đổi máy khi nâng cấp thiết bị mới",
-        "Kênh hỗ trợ VIP riêng biệt",
-      ],
-      cta: "Liên Hệ Tư Vấn Trọn Đời",
+      desc: isVi
+        ? "Đầu tư một lần duy nhất, sở hữu mãi mãi và nhận toàn bộ bản nâng cấp lớn trong tương lai."
+        : "Single investment, permanent ownership, and all future major version upgrades included.",
+      features: isVi
+        ? [
+            "Sở hữu vĩnh viễn không thời hạn",
+            "Đầy đủ mọi ứng dụng hiện tại & tương lai",
+            "Miễn phí mọi bản nâng cấp v3.x, v4.x trọn đời",
+            "Mở khóa độc quyền kho tài nguyên VIP",
+            "Hỗ trợ chuyển đổi máy khi nâng cấp thiết bị mới",
+            "Kênh hỗ trợ VIP riêng biệt",
+          ]
+        : [
+            "Permanent lifetime license with zero renewal fees",
+            "All current & future studio applications",
+            "Free lifetime v3.x, v4.x major version upgrades",
+            "Exclusive access to VIP studio resources",
+            "License transfer assistance when upgrading hardware",
+            "Direct VIP support line",
+          ],
+      cta: isVi ? "Liên Hệ Tư Vấn Trọn Đời" : "Consult Lifetime Plan",
       link: zaloUrl,
       isExternal: true,
     },
@@ -75,19 +109,19 @@ export function Pricing() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div className="space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-              <span>Bảng Giá Tham Khảo</span>
+              <span>{t("pricing.badge")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Bảng Giá Tham Khảo Cho Studio & Freelancer
+              {t("pricing.title")}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
-              Các mức giá dưới đây mang tính chất tham khảo dự toán chi phí. Vui lòng liên hệ trực tiếp để được tư vấn gói phù hợp với quy mô thiết bị và khối lượng công việc của bạn.
+              {t("pricing.subtitle")}
             </p>
           </div>
 
           <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] text-xs text-slate-600 dark:text-slate-400 self-start md:self-auto font-mono">
             <ShieldCheck size={14} className="text-emerald-500" />
-            <span>Giá tham khảo minh bạch</span>
+            <span>{t("pricing.transparent")}</span>
           </div>
         </div>
 
@@ -95,7 +129,7 @@ export function Pricing() {
         <div className="mb-10 p-4 rounded-2xl bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 flex items-start sm:items-center gap-3 text-xs text-blue-900 dark:text-blue-300">
           <Info size={18} className="shrink-0 text-blue-600 dark:text-blue-400 mt-0.5 sm:mt-0" />
           <div className="flex-1 leading-relaxed">
-            <strong>Lưu ý:</strong> Chúng tôi không thu tiền tự động trên web. Mọi tư vấn, cấp bản quyền dùng thử hoặc kích hoạt chính hãng được thực hiện trực tiếp qua Hotline / Zalo:{" "}
+            <strong>{isVi ? "Lưu ý:" : "Note:"}</strong> {t("pricing.notice")}{" "}
             <a
               href={zaloUrl}
               target="_blank"
@@ -144,7 +178,7 @@ export function Pricing() {
                       {plan.price}
                     </span>
                     <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">
-                      (tham khảo)
+                      {t("pricing.ref")}
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
@@ -198,10 +232,10 @@ export function Pricing() {
         <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#0E1526] border border-slate-200 dark:border-blue-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div className="space-y-1">
             <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base tracking-tight">
-              Cần Báo Giá Theo Dự Án Hoặc Số Lượng Máy Studio?
+              {t("pricing.studioNeed.title")}
             </h4>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              Liên hệ hotline trực tiếp để nhận chính sách hỗ trợ tốt nhất cho đội ngũ thợ chụp và ekip dựng ảnh.
+              {t("pricing.studioNeed.desc")}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
@@ -219,7 +253,7 @@ export function Pricing() {
               className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-sm whitespace-nowrap cursor-pointer"
             >
               <PhoneCall size={13} />
-              <span>Nhắn Zalo Tư Vấn</span>
+              <span>{t("pricing.zaloCta")}</span>
             </a>
           </div>
         </div>
