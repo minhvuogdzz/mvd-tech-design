@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Check, Zap, QrCode, X, PhoneCall } from "lucide-react";
+import { Check, Zap, QrCode, X, PhoneCall, Copy, CheckCircle2 } from "lucide-react";
 
 export function Pricing() {
   const [selectedPlan, setSelectedPlan] = useState<{
@@ -9,17 +9,19 @@ export function Pricing() {
     code: string;
   } | null>(null);
 
+  const [copiedCode, setCopiedCode] = useState(false);
+
   const plans = [
     {
       id: "trial",
-      name: "Gói Dùng Thử",
+      name: "Bản Dùng Thử",
       price: "0đ",
-      period: "7 ngày",
+      period: "7 ngày đầy đủ",
       badge: "MIỄN PHÍ",
       highlight: false,
-      desc: "Trải nghiệm đầy đủ 100% tính năng của hệ sinh thái MVD T&D trước khi quyết định mua bản quyền.",
+      desc: "Trải nghiệm đầy đủ 100% tính năng của hệ sinh thái MVD Studio trước khi quyết định mua bản quyền.",
       features: [
-        "Đầy đủ 4 ứng dụng trong SuperApp",
+        "Đầy đủ 4 ứng dụng trong bộ cài đặt",
         "Không giới hạn số lượng ảnh lọc",
         "Tự động hóa Google Sheets & Drive",
         "Thống kê ảnh Photo Counter",
@@ -35,16 +37,16 @@ export function Pricing() {
       period: "12 tháng",
       badge: "KHUYÊN DÙNG",
       highlight: true,
-      desc: "Lựa chọn tiết kiệm chi phí tối ưu dành cho thợ ảnh tự do (freelancer) và studio vừa.",
+      desc: "Lựa chọn tiết kiệm chi phí tối ưu dành cho thợ ảnh tự do (freelancer) và studio quy mô vừa.",
       features: [
         "Sử dụng không giới hạn 365 ngày",
         "Trọn bộ Photo Picker Pro + Contact The Sheet",
-        "Mở khóa toàn bộ kho Presets & Overlays",
+        "Mở khóa toàn bộ kho Presets & Typography",
         "Cập nhật miễn phí mọi tính năng mới trong năm",
         "Hỗ trợ cài đặt từ xa qua UltraViewer / AnyDesk",
         "Ưu tiên hỗ trợ kỹ thuật 24/7",
       ],
-      cta: "Đăng Ký Gói 1 Năm",
+      cta: "Kích Hoạt Gói 1 Năm",
       action: () =>
         setSelectedPlan({
           name: "Gói Bản Quyền 1 Năm",
@@ -80,29 +82,37 @@ export function Pricing() {
     },
   ];
 
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
   return (
-    <section id="pricing" className="py-14 md:py-20 relative border-t border-slate-800/80 bg-[#090D17]">
+    <section id="pricing" className="py-14 md:py-20 relative bg-[#090C16] border-b border-white/[0.08]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="max-w-2xl mx-auto text-center space-y-2 mb-12">
-          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full studio-panel border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
+        {/* Section Header */}
+        <div className="max-w-3xl mx-auto text-center space-y-2 mb-12">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
             <span>Bảng Giá Bản Quyền</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-            Chi Phí Hợp Lý, Giá Trị Lâu Dài
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+            Chi Phí Đầu Tư Hợp Lý Cho Studio & Nhiếp Ảnh Gia
           </h2>
-          <p className="text-xs text-slate-400">
-            Kích hoạt bản quyền chính hãng để mở khóa toàn bộ sức mạnh của MVD Tech & Design.
+          <p className="text-xs sm:text-sm text-slate-400">
+            Tiết kiệm 60 giờ ngồi dò mã ảnh thủ công mỗi tháng. Chỉ 1 buổi chụp dịch vụ đã hoàn vốn đầu tư phần mềm.
           </p>
         </div>
 
+        {/* 3 Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
           {plans.map((plan) => (
             <div
               key={plan.id}
               className={`rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 relative ${
                 plan.highlight
-                  ? "bg-[#0E1626] border-2 border-blue-500/70 shadow-[0_0_35px_-5px_rgba(37,99,235,0.2)]"
-                  : "studio-panel border border-slate-800 hover:border-slate-700"
+                  ? "bg-[#0C121F] border-2 border-blue-500 shadow-2xl shadow-blue-500/10"
+                  : "bg-[#0A0D15] border border-white/[0.08] hover:border-white/[0.15]"
               }`}
             >
               {plan.highlight && (
@@ -135,13 +145,13 @@ export function Pricing() {
                       / {plan.period}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-relaxed pt-1">
+                  <p className="text-xs text-slate-400 leading-relaxed pt-1">
                     {plan.desc}
                   </p>
                 </div>
 
-                <div className="space-y-2 pt-3 border-t border-slate-800">
-                  <span className="text-[11px] font-bold text-slate-300 uppercase tracking-wider block">
+                <div className="space-y-2 pt-3 border-t border-white/[0.06]">
+                  <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
                     Quyền lợi bao gồm:
                   </span>
                   <ul className="space-y-2">
@@ -163,7 +173,7 @@ export function Pricing() {
                 </div>
               </div>
 
-              <div className="pt-6 mt-4 border-t border-slate-800/80">
+              <div className="pt-6 mt-4 border-t border-white/[0.06]">
                 {plan.action ? (
                   <button
                     onClick={plan.action}
@@ -179,7 +189,7 @@ export function Pricing() {
                 ) : (
                   <a
                     href={plan.link}
-                    className="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-slate-700/60"
+                    className="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-white/[0.06]"
                   >
                     {plan.cta}
                   </a>
@@ -192,72 +202,90 @@ export function Pricing() {
 
       {/* VietQR / License Modal */}
       {selectedPlan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-          <div className="relative w-full max-w-md studio-panel rounded-2xl p-6 border border-blue-500/40 shadow-2xl bg-[#0D131F] text-slate-100 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-150">
+          <div className="relative w-full max-w-md rounded-2xl p-6 border border-blue-500/40 shadow-2xl bg-[#0C101B] text-slate-100 space-y-4">
             <button
               onClick={() => setSelectedPlan(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800"
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 cursor-pointer"
             >
               <X size={18} />
             </button>
 
             <div className="text-center space-y-1">
               <div className="inline-flex p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                <QrCode size={22} />
+                <QrCode size={20} />
               </div>
               <h3 className="text-base font-bold text-white">
                 Kích Hoạt {selectedPlan.name}
               </h3>
               <p className="text-xs text-slate-400">
-                Giá cước: <span className="font-mono font-bold text-blue-400">{selectedPlan.price}</span> ({selectedPlan.period})
+                Số tiền thanh toán: <span className="font-mono font-bold text-blue-400">{selectedPlan.price}</span> ({selectedPlan.period})
               </p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#090D17] border border-slate-800 space-y-2 text-xs">
-              <div className="flex justify-between items-center py-0.5 border-b border-slate-800">
+            {/* QR Image Box */}
+            <div className="flex justify-center p-3 rounded-xl bg-white/5 border border-white/10">
+              <img
+                src="/brand/qr_payment.jpg"
+                alt="VietQR Chuyển Khoản"
+                className="w-48 h-auto rounded-lg shadow-md"
+              />
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[#07090F] border border-white/[0.08] space-y-2 text-xs">
+              <div className="flex justify-between items-center py-0.5 border-b border-white/[0.06]">
                 <span className="text-slate-400">Ngân hàng:</span>
                 <span className="font-bold text-white">MB Bank (Quân Đội)</span>
               </div>
-              <div className="flex justify-between items-center py-0.5 border-b border-slate-800">
+              <div className="flex justify-between items-center py-0.5 border-b border-white/[0.06]">
                 <span className="text-slate-400">Số tài khoản:</span>
                 <span className="font-mono font-bold text-blue-400 text-sm">
                   8888 8888 8888
                 </span>
               </div>
-              <div className="flex justify-between items-center py-0.5 border-b border-slate-800">
+              <div className="flex justify-between items-center py-0.5 border-b border-white/[0.06]">
                 <span className="text-slate-400">Chủ tài khoản:</span>
                 <span className="font-bold text-white uppercase">DƯƠNG MINH VƯƠNG</span>
               </div>
               <div className="flex justify-between items-center py-0.5">
-                <span className="text-slate-400">Nội dung chuyển khoản:</span>
-                <span className="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  {selectedPlan.code} [SĐT]
-                </span>
+                <span className="text-slate-400">Nội dung CK:</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    {selectedPlan.code} [SĐT]
+                  </span>
+                  <button
+                    onClick={() => handleCopyCode(`${selectedPlan.code} 0339676003`)}
+                    className="p-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer"
+                    title="Copy nội dung"
+                  >
+                    {copiedCode ? <CheckCircle2 size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                  </button>
+                </div>
               </div>
             </div>
 
             <div className="p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 text-center space-y-0.5">
               <p className="font-bold text-[11px]">⚡ Kích Hoạt Key Tự Động Trong Vài Phút</p>
               <p className="text-[10px] text-slate-400">
-                Sau khi chuyển khoản, bạn nhắn tin Zalo để được kích hoạt ngay lập tức.
+                Sau khi chuyển khoản, bạn nhắn tin Zalo hoặc gọi 0339 676 003 để nhận mã kích hoạt bản quyền ngay lập tức.
               </p>
             </div>
 
             <div className="flex gap-2 pt-1">
               <button
                 onClick={() => setSelectedPlan(null)}
-                className="flex-1 py-2.5 rounded-xl border border-slate-800 text-xs font-bold text-slate-400 hover:bg-slate-800"
+                className="flex-1 py-2.5 rounded-xl border border-white/[0.08] text-xs font-bold text-slate-400 hover:bg-slate-800 cursor-pointer"
               >
                 Đóng
               </button>
               <a
-                href="https://zalo.me"
+                href="https://zalo.me/0339676003"
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm"
+                className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
               >
                 <PhoneCall size={13} />
-                Nhắn Zalo Kích Hoạt
+                Nhắn Zalo Nhận Key
               </a>
             </div>
           </div>

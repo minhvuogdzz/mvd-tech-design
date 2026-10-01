@@ -1,9 +1,9 @@
 import React from "react";
-import { ShieldCheck, Heart } from "lucide-react";
+import { ShieldCheck, Heart, Terminal, ExternalLink } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-800/80 bg-[#060910] text-slate-400 text-xs py-10">
+    <footer className="border-t border-white/[0.08] bg-[#05070C] text-slate-400 text-xs py-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Brand */}
@@ -12,15 +12,15 @@ export function Footer() {
               <img
                 src="/brand/mvd_app_icon_minimal_dark_squircle.png"
                 alt="MVD Logo"
-                className="w-6 h-6 rounded-md shadow-sm border border-slate-700/60"
+                className="w-6 h-6 rounded-md shadow-sm border border-white/10"
               />
               <span className="font-bold text-xs text-white">MVD Tech & Design</span>
             </div>
-            <p className="text-[11px] text-slate-500 leading-relaxed">
-              Hệ sinh thái phần mềm chọn ảnh và tự động hóa trả file chuyên nghiệp cho studio nhiếp ảnh toàn quốc.
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              Bộ công cụ lọc ảnh RAW và tự động hóa trả file chuyên nghiệp dành cho studio ảnh cưới, phóng sự, kỷ yếu và freelancer toàn quốc.
             </p>
             <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-mono">
-              <ShieldCheck size={12} className="text-emerald-500" />
+              <ShieldCheck size={12} className="text-emerald-400" />
               <span>Bản quyền phát triển độc quyền</span>
             </div>
           </div>
@@ -31,10 +31,11 @@ export function Footer() {
               Hệ Sinh Thái
             </h4>
             <ul className="space-y-1.5 text-slate-400">
+              <li><a href="#workbench" className="hover:text-blue-400 transition-colors">Trải nghiệm Workbench</a></li>
               <li><a href="#apps" className="hover:text-blue-400 transition-colors">Photo Picker Pro</a></li>
               <li><a href="#apps" className="hover:text-blue-400 transition-colors">Contact The Sheet</a></li>
               <li><a href="#apps" className="hover:text-blue-400 transition-colors">Photo Counter</a></li>
-              <li><a href="#apps" className="hover:text-blue-400 transition-colors">Resources & Presets</a></li>
+              <li><a href="#benchmark" className="hover:text-blue-400 transition-colors">So sánh hiệu năng vs Lightroom</a></li>
             </ul>
           </div>
 
@@ -44,10 +45,11 @@ export function Footer() {
               Tải Về & Bảng Giá
             </h4>
             <ul className="space-y-1.5 text-slate-400">
-              <li><a href="#downloads" className="hover:text-blue-400 transition-colors">Tải bản macOS Apple Silicon</a></li>
-              <li><a href="#downloads" className="hover:text-blue-400 transition-colors">Tải bản Windows (64-bit)</a></li>
+              <li><a href="#downloads" className="hover:text-blue-400 transition-colors">macOS Apple Silicon (M1—M4)</a></li>
+              <li><a href="#downloads" className="hover:text-blue-400 transition-colors">macOS Chip Intel</a></li>
+              <li><a href="#downloads" className="hover:text-blue-400 transition-colors">Windows 10 / 11 (64-bit)</a></li>
               <li><a href="#pricing" className="hover:text-blue-400 transition-colors">Bảng giá bản quyền</a></li>
-              <li><a href="#faq" className="hover:text-blue-400 transition-colors">Hướng dẫn cài đặt & Gatekeeper</a></li>
+              <li><a href="#downloads" className="hover:text-blue-400 transition-colors">Lệnh khắc phục Gatekeeper</a></li>
             </ul>
           </div>
 
@@ -56,21 +58,23 @@ export function Footer() {
             <h4 className="font-bold text-white uppercase tracking-wider text-[10px]">
               Hỗ Trợ Kỹ Thuật
             </h4>
-            <ul className="space-y-1.5 text-slate-400">
-              <li>Zalo Hỗ Trợ: <strong className="text-white">0339 676 003</strong></li>
-              <li>Email: contact@mvd.vn</li>
+            <ul className="space-y-1.5 text-slate-400 font-mono text-[10px]">
+              <li>Zalo: <a href="https://zalo.me/0339676003" target="_blank" rel="noreferrer" className="text-blue-400 hover:underline font-bold">0339 676 003</a></li>
               <li>Hỗ trợ từ xa: UltraViewer / AnyDesk</li>
-              <li>Khung giờ: 8:00 - 23:00 hàng ngày</li>
+              <li>Khung giờ: 8:00 — 23:00 hàng ngày</li>
+              <li>Bảo mật: Local-First Air-Gapped</li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="pt-6 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-slate-500 font-mono">
+        <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-slate-500 font-mono">
           <p>&copy; {new Date().getFullYear()} MVD Tech & Design Studio. Toàn bộ quyền được bảo lưu.</p>
-          <p className="flex items-center gap-1 font-sans">
-            Xây dựng với <Heart size={10} className="text-rose-500 fill-current" /> bởi <strong className="text-slate-300">Dương Minh Vương</strong>
-          </p>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1 font-sans">
+              Phát triển bởi <strong className="text-slate-300">Dương Minh Vương</strong>
+            </span>
+          </div>
         </div>
       </div>
     </footer>
