@@ -3,96 +3,78 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 export interface SiteConfig {
   phone: string;
   phoneFormatted: string;
-  benchmarkImageUrl: string;
-  benchmarkNotes: string;
   benchmarkTitle: string;
+  benchmarkNotes: string;
 }
 
 const DEFAULT_CONFIG: SiteConfig = {
   phone: "0869528304",
   phoneFormatted: "0869 528 304",
-  benchmarkImageUrl: "",
   benchmarkTitle: "Hiệu Năng Thực Tế: MVD Photo Picker Pro vs Adobe Lightroom Classic",
   benchmarkNotes: "Thử nghiệm thực địa với 2,000 file RAW Sony 33MP (ILCE-7M4) trên máy MacBook Pro Apple Silicon (M-Series) và máy tính Windows 11 PC.",
 };
 
-const STORAGE_KEY = "mvd_site_config_v1";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? "http://localhost:3000" : "https://photo-picker-backend.onrender.com");
 
 interface SiteConfigContextType {
   config: SiteConfig;
   zaloUrl: string;
   telUrl: string;
-  isAdminModalOpen: boolean;
-  openAdminModal: () => void;
-  closeAdminModal: () => void;
-  updateConfig: (patch: Partial<SiteConfig>) => void;
-  resetConfig: () => void;
 }
 
 const SiteConfigContext = createContext<SiteConfigContextType>({
   config: DEFAULT_CONFIG,
   zaloUrl: `https://zalo.me/${DEFAULT_CONFIG.phone}`,
   telUrl: `tel:${DEFAULT_CONFIG.phone}`,
-  isAdminModalOpen: false,
-  openAdminModal: () => {},
-  closeAdminModal: () => {},
-  updateConfig: () => {},
-  resetConfig: () => {},
 });
 
 export function SiteConfigProvider({ children }: { children: React.ReactNode }) {
-  const [config, setConfig] = useState<SiteConfig>(() => {
-    if (typeof window === "undefined") return DEFAULT_CONFIG;
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return { ...DEFAULT_CONFIG, ...parsed };
-      }
-    } catch (e) {
-      console.error("Failed to load site config:", e);
-    }
-    return DEFAULT_CONFIG;
-  });
+  const [config, setConfig] = useState<SiteConfig>(DEFAULT_CONFIG);
 
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
-
-  const updateConfig = (patch: Partial<SiteConfig>) => {
-    setConfig((prev) => {
-      let formatted = prev.phoneFormatted;
-      if (patch.phone) {
-        // Auto format phone if changed
-        const clean = patch.phone.replace(/\D/g, "");
-        if (clean.length === 10) {
-          formatted = `${clean.slice(0, 4)} ${clean.slice(4, 7)} ${clean.slice(7)}`;
-        } else {
-          formatted = clean;
-        }
-      }
-
-      const next = {
-        ...prev,
-        ...patch,
-        phoneFormatted: patch.phoneFormatted || formatted,
-      };
-
+  // Sync with backend public config if available (admin configures via photo-picker-pro-admin)
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchPublicConfig() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch (e) {
-        console.error("Failed to save site config:", e);
-      }
-      return next;
-    });
-  };
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
+        const res = await fetch(`${API_BASE_URL}/config/public`, {
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
 
-  const resetConfig = () => {
-    setConfig(DEFAULT_CONFIG);
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch (e) {
-      console.error("Failed to reset site config:", e);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!isMounted) return;
+
+        if (data?.supportZaloPhone && typeof data.supportZaloPhone === "string") {
+          const rawPhone = data.supportZaloPhone.trim();
+          if (rawPhone.length >= 9) {
+            const clean = rawPhone.replace(/\D/g, "");
+            const formatted =
+              clean.length === 10
+                ? `${clean.slice(0, 4)} ${clean.slice(4, 7)} ${clean.slice(7)}`
+                : rawPhone;
+
+            setConfig((prev) => ({
+              ...prev,
+              phone: clean,
+              phoneFormatted: formatted,
+            }));
+          }
+        }
+      } catch {
+        // Silently fall back to default official phone number (0869528304)
+      }
     }
-  };
+
+    fetchPublicConfig();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const cleanPhone = config.phone.replace(/\D/g, "");
   const zaloUrl = `https://zalo.me/${cleanPhone}`;
@@ -104,11 +86,6 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
         config,
         zaloUrl,
         telUrl,
-        isAdminModalOpen,
-        openAdminModal: () => setIsAdminModalOpen(true),
-        closeAdminModal: () => setIsAdminModalOpen(false),
-        updateConfig,
-        resetConfig,
       }}
     >
       {children}
@@ -117,5 +94,9 @@ export function SiteConfigProvider({ children }: { children: React.ReactNode }) 
 }
 
 export function useSiteConfig() {
-  return useContext(SiteConfigContext);
+  const context = useContext(SiteConfigContext);
+  if (!context) {
+    throw new Error("useSiteConfig must be used within a SiteConfigProvider");
+  }
+  return context;
 }

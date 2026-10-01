@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Settings, ExternalLink } from "lucide-react";
+import { ShieldCheck, ExternalLink } from "lucide-react";
 import { useSiteConfig } from "@/context/SiteConfigContext";
 
 export function Footer() {
-  const { config, zaloUrl, openAdminModal } = useSiteConfig();
+  const { config, zaloUrl } = useSiteConfig();
 
   return (
     <footer className="border-t border-slate-200 dark:border-white/[0.08] bg-slate-100 dark:bg-[#05070C] text-slate-600 dark:text-slate-400 text-xs py-14 transition-colors duration-150">
@@ -120,14 +120,6 @@ export function Footer() {
             <span className="flex items-center gap-1 font-sans">
               Phát triển bởi <strong className="text-slate-800 dark:text-slate-300">Dương Minh Vương</strong>
             </span>
-            <button
-              onClick={openAdminModal}
-              className="inline-flex items-center gap-1 text-[10px] text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors cursor-pointer"
-              title="Cài đặt quản trị (SĐT & Benchmark)"
-            >
-              <Settings size={11} />
-              <span>Admin Config</span>
-            </button>
           </div>
         </div>
       </div>

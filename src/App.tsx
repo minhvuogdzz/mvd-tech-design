@@ -7,7 +7,6 @@ import { SiteConfigProvider } from "@/context/SiteConfigContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import { AdminConfigModal } from "@/components/AdminConfigModal";
 
 // Dedicated Pages
 import { HomePage } from "@/pages/HomePage";
@@ -18,7 +17,6 @@ import { BenchmarkPage } from "@/pages/BenchmarkPage";
 import { DownloadPage } from "@/pages/DownloadPage";
 import { PricingPage } from "@/pages/PricingPage";
 import { SupportPage } from "@/pages/SupportPage";
-import { AdminPage } from "@/pages/AdminPage";
 
 export function App() {
   const [release, setRelease] = useState<LatestRelease>(FALLBACK_RELEASE);
@@ -36,7 +34,6 @@ export function App() {
       <SiteConfigProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <AdminConfigModal />
           <div className="min-h-screen bg-slate-50 dark:bg-[#07090E] text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-blue-600/20 selection:text-blue-600 dark:selection:bg-blue-600/30 dark:selection:text-blue-200 transition-colors duration-150">
             <Navbar version={release.version} />
             <main className="flex-1">
@@ -61,7 +58,6 @@ export function App() {
                 />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/support" element={<SupportPage />} />
-                <Route path="/admin" element={<AdminPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>

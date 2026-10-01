@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Layers,
   FileSpreadsheet,
@@ -107,6 +107,10 @@ const SAMPLE_PHOTOS: SamplePhoto[] = [
   },
 ];
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? "http://localhost:3000" : "https://photo-picker-backend.onrender.com");
+
 export function StudioWorkbench() {
   const [activeTab, setActiveTab] = useState<"picker" | "sheets" | "counter">("picker");
 
@@ -114,6 +118,50 @@ export function StudioWorkbench() {
   const [photos, setPhotos] = useState<SamplePhoto[]>(SAMPLE_PHOTOS);
   const [selectedIdx, setSelectedIdx] = useState<number>(0);
   const [loupeActive, setLoupeActive] = useState<boolean>(true);
+
+  // Load showcase test photos configured by admin via photo-picker-pro-admin
+  useEffect(() => {
+    let isMounted = true;
+    async function loadShowcasePhotos() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
+        const res = await fetch(`${API_BASE_URL}/showcase`, {
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+
+        if (!res.ok) return;
+        const json = await res.json();
+        const list = json?.data || (Array.isArray(json) ? json : []);
+
+        if (Array.isArray(list) && list.length > 0 && isMounted) {
+          const customPhotos: SamplePhoto[] = list.map((item: any, idx: number) => ({
+            id: item.id || `custom-${idx}`,
+            name: item.title && item.title.includes(".") ? item.title : `DSC0${5000 + idx}.ARW`,
+            rating: 5,
+            color: (["green", "blue", "yellow", "red"][idx % 4] as SamplePhoto["color"]),
+            shutter: "1/4000s",
+            aperture: "f/1.4",
+            iso: "ISO 100",
+            lens: "FE 50mm F1.4 GM",
+            camera: "SONY ILCE-7M4",
+            focusPoint: "Eye AF (Right Eye Locked)",
+            previewUrl: item.url,
+            loupeCropUrl: item.url,
+          }));
+          setPhotos([...customPhotos, ...SAMPLE_PHOTOS]);
+        }
+      } catch {
+        // Fall back to built-in SAMPLE_PHOTOS
+      }
+    }
+
+    loadShowcasePhotos();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // State for Contact The Sheet
   const [sheetInput, setSheetInput] = useState<string>(
@@ -265,8 +313,8 @@ export function StudioWorkbench() {
                         <span className="truncate">2026_Wedding_TrangMinh</span>
                       </div>
                       <div className="text-[10px] font-mono text-slate-500 flex justify-between">
-                        <span>Tổng số file:</span>
-                        <span className="text-slate-300 font-bold">1,480 RAWs</span>
+                        <span>Ảnh mẫu thử:</span>
+                        <span className="text-slate-300 font-bold">{photos.length} ảnh RAW</span>
                       </div>
                       <div className="text-[10px] font-mono text-slate-500 flex justify-between">
                         <span>Tốc độ đọc cache:</span>
@@ -467,8 +515,9 @@ export function StudioWorkbench() {
 
                 {/* Bottom Filmstrip Thumbnails */}
                 <div className="h-18 px-3 py-2 bg-[#080B12] border-t border-white/[0.08] flex items-center gap-2 overflow-x-auto">
-                  <div className="text-[10px] font-mono text-slate-500 mr-1 shrink-0">
-                    Strip:
+                  <div className="text-[10px] font-mono text-slate-400 mr-1 shrink-0 flex items-center gap-1 font-bold">
+                    <Camera size={12} className="text-blue-400" />
+                    <span>Ảnh Thử:</span>
                   </div>
                   {photos.map((p, idx) => (
                     <button

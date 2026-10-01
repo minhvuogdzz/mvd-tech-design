@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   Zap,
@@ -8,16 +8,11 @@ import {
   HardDrive,
   BatteryCharging,
   Gauge,
-  Image as ImageIcon,
-  Settings,
-  Maximize2,
-  X,
 } from "lucide-react";
 import { useSiteConfig } from "@/context/SiteConfigContext";
 
 export function BenchmarkComparison() {
-  const { config, openAdminModal } = useSiteConfig();
-  const [zoomImage, setZoomImage] = useState(false);
+  const { config } = useSiteConfig();
 
   const comparisons = [
     {
@@ -58,15 +53,15 @@ export function BenchmarkComparison() {
       lrc: "Không hỗ trợ (Phải dò tay từng số)",
       mvd: "Tự động bóc tách trong 0.4 giây",
       winner: "mvd",
-      note: "Nhận diện dải số '4901..4905' và bóc file chuẩn xác 100%.",
+      note: "Regex engine tự nhận diện dải số liên tiếp và gom trọn file RAW gốc.",
     },
     {
-      metric: "Mức tiêu thụ pin ngoại cảnh (MacBook)",
+      metric: "Thời lượng pin khi chụp ngoại cảnh",
       icon: <BatteryCharging size={14} className="text-blue-500" />,
-      lrc: "Hao 35% pin/giờ (Quạt kêu lớn)",
-      mvd: "< 6% pin/giờ (Chạy êm ái)",
+      lrc: "Tốn 25 — 35% pin / giờ (Quạt hú)",
+      mvd: "Chỉ tốn 6 — 8% pin / giờ (Máy mát)",
       winner: "mvd",
-      note: "Tận dụng tối đa lõi tiết kiệm điện của Apple Silicon M1/M2/M3/M4.",
+      note: "Không ép CPU render dư thừa, tối ưu tuyệt đối cho thợ đi làm xa nguồn điện.",
     },
   ];
 
@@ -88,53 +83,11 @@ export function BenchmarkComparison() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-start md:self-auto">
-            <button
-              onClick={openAdminModal}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm cursor-pointer"
-              title="Nhấn để thay đổi ảnh benchmark hoặc số điện thoại"
-            >
-              <Settings size={13} />
-              <span>Tùy chỉnh ảnh / số liệu (Admin)</span>
-            </button>
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] text-xs text-slate-600 dark:text-slate-400 font-mono shadow-sm self-start md:self-auto">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Thử nghiệm phần cứng thực địa</span>
           </div>
         </div>
-
-        {/* Custom Benchmark Image Showcase (if set by Admin) */}
-        {config.benchmarkImageUrl && (
-          <div className="rounded-3xl border border-slate-200 dark:border-white/[0.1] bg-white dark:bg-[#0A0E18] p-6 sm:p-8 space-y-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <ImageIcon size={16} className="text-blue-500" />
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-                  Biểu Đồ Hiệu Năng Do Admin Đăng Tải
-                </h3>
-              </div>
-              <button
-                onClick={() => setZoomImage(true)}
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 font-semibold cursor-pointer"
-              >
-                <Maximize2 size={13} />
-                <span>Xem kích thước đầy đủ</span>
-              </button>
-            </div>
-
-            <div
-              onClick={() => setZoomImage(true)}
-              className="relative overflow-hidden rounded-2xl bg-slate-100 dark:bg-black/30 border border-slate-200 dark:border-white/[0.06] flex items-center justify-center p-4 cursor-pointer group"
-            >
-              <img
-                src={config.benchmarkImageUrl}
-                alt="Benchmark Visualization"
-                className="max-h-96 w-auto object-contain rounded-lg group-hover:scale-[1.01] transition-transform duration-200"
-              />
-              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-2">
-                <Maximize2 size={16} />
-                <span>Nhấn để phóng to ảnh</span>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Technical Comparison Table */}
         <div className="rounded-3xl border border-slate-200 dark:border-white/[0.1] bg-white dark:bg-[#0A0E18] overflow-hidden shadow-sm">
@@ -144,38 +97,36 @@ export function BenchmarkComparison() {
             <div className="col-span-3 text-slate-500 dark:text-slate-400 text-center">Adobe Lightroom Classic</div>
             <div className="col-span-4 text-blue-600 dark:text-blue-400 text-center flex items-center justify-center gap-2">
               <span>MVD Photo Picker Pro</span>
-              <span className="text-[9px] bg-blue-500/15 border border-blue-500/30 px-2 py-0.5 rounded-full text-blue-700 dark:text-blue-300">v2.6.6 Native</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-500/30 font-mono">
+                Native Engine
+              </span>
             </div>
           </div>
 
-          {/* Table Rows */}
-          <div className="divide-y divide-slate-100 dark:divide-white/[0.05]">
+          {/* Rows */}
+          <div className="divide-y divide-slate-100 dark:divide-white/[0.04]">
             {comparisons.map((row, idx) => (
               <div
                 key={idx}
-                className="grid grid-cols-12 px-6 py-4 items-center hover:bg-slate-50/80 dark:hover:bg-white/[0.02] transition-colors text-xs"
+                className="grid grid-cols-12 px-6 py-4 items-center hover:bg-slate-50/60 dark:hover:bg-white/[0.015] transition-colors"
               >
-                <div className="col-span-5 space-y-1 pr-3">
-                  <div className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-2.5">
+                <div className="col-span-5 space-y-1 pr-4">
+                  <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
                     {row.icon}
-                    <span className="text-sm tracking-tight">{row.metric}</span>
+                    <span>{row.metric}</span>
                   </div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-500 hidden sm:block leading-relaxed">
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 pl-6 leading-relaxed">
                     {row.note}
                   </div>
                 </div>
 
-                <div className="col-span-3 text-center font-mono text-slate-600 dark:text-slate-400 text-xs">
-                  <span className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-black/40 border border-slate-200 dark:border-white/[0.04] tabular-nums">
-                    {row.lrc}
-                  </span>
+                <div className="col-span-3 text-center text-xs font-mono text-slate-500 dark:text-slate-400">
+                  {row.lrc}
                 </div>
 
-                <div className="col-span-4 text-center font-mono text-xs">
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-500/15 border border-blue-200 dark:border-blue-500/30 text-blue-700 dark:text-blue-300 font-bold tabular-nums">
-                    <Check size={13} className="text-blue-600 dark:text-blue-400 shrink-0" />
-                    <span>{row.mvd}</span>
-                  </span>
+                <div className="col-span-4 flex items-center justify-center gap-2 text-center text-xs sm:text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                  <Check size={14} strokeWidth={3} className="shrink-0 text-emerald-500" />
+                  <span>{row.mvd}</span>
                 </div>
               </div>
             ))}
@@ -191,32 +142,12 @@ export function BenchmarkComparison() {
               to="/download"
               className="text-blue-600 dark:text-blue-400 hover:text-blue-500 font-bold flex items-center gap-1.5 transition-colors duration-150 whitespace-nowrap"
             >
-              <span>Tải bản v2.6.6 về máy test ngay</span>
+              <span>Tải bản cài đặt về test thực tế</span>
               <span>&rarr;</span>
             </Link>
           </div>
         </div>
       </div>
-
-      {/* Lightbox Modal for Zooming Benchmark Image */}
-      {zoomImage && config.benchmarkImageUrl && (
-        <div
-          onClick={() => setZoomImage(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 cursor-pointer animate-in fade-in"
-        >
-          <button
-            onClick={() => setZoomImage(false)}
-            className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white cursor-pointer"
-          >
-            <X size={20} />
-          </button>
-          <img
-            src={config.benchmarkImageUrl}
-            alt="Benchmark Zoomed"
-            className="max-h-[90vh] max-w-[90vw] object-contain rounded-xl shadow-2xl"
-          />
-        </div>
-      )}
     </section>
   );
 }
