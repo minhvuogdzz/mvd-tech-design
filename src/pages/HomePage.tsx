@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { LatestRelease } from "@/types/release";
 import { Hero } from "@/components/Hero";
 import { StudioWorkbench } from "@/components/StudioWorkbench";
+import { StudioWorkflow } from "@/components/StudioWorkflow";
 import {
   Layers,
   FileSpreadsheet,
@@ -225,7 +226,10 @@ export function HomePage({ release }: HomePageProps) {
         </div>
       </section>
 
-      {/* 4. Engineering Benchmark Banner */}
+      {/* 4. Closed-Loop Studio Workflow */}
+      <StudioWorkflow />
+
+      {/* 5. Engineering Benchmark Banner */}
       <section className="py-8 max-w-6xl mx-auto px-4 sm:px-6">
         <div className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
           <div className="space-y-3 max-w-2xl">

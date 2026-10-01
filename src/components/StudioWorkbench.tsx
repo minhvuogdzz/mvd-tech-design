@@ -179,24 +179,24 @@ export function StudioWorkbench() {
   };
 
   return (
-    <section id="workbench" className="py-12 md:py-20 relative border-b border-white/[0.08]">
+    <section id="workbench" className="py-12 md:py-20 relative border-b border-slate-200 dark:border-white/[0.08]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-2 mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
             <Zap size={11} />
             <span>Interactive Studio Simulator</span>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Trải Nghiệm Trực Tiếp Workbench Trên Web
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
             Không cần xem video quảng cáo chung chung. Dưới đây là mô phỏng thực tế thao tác lọc ảnh & tự động hóa bóc tách Google Sheets của MVD Studio.
           </p>
         </div>
 
         {/* Studio Window Frame */}
-        <div className="rounded-2xl border border-white/[0.12] bg-[#0A0D15] shadow-2xl overflow-hidden">
+        <div className="rounded-2xl border border-slate-200 dark:border-white/[0.12] bg-[#0A0D15] shadow-2xl overflow-hidden">
           {/* Window Titlebar */}
           <div className="h-11 px-4 bg-[#07090F] border-b border-white/[0.08] flex items-center justify-between select-none">
             {/* Clean Status Header */}
