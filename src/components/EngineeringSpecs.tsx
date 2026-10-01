@@ -43,50 +43,57 @@ cron::schedule("0 0 0 * * *", Timezone::Asia_HoChiMinh, || {
   ];
 
   return (
-    <section id="engineering" className="py-14 md:py-20 relative bg-[#090C16] border-b border-white/[0.08]">
+    <section id="engineering" className="py-16 md:py-24 relative bg-[#07090E] border-b border-white/[0.08]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-2 mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
-            <Terminal size={11} />
-            <span>Dưới Nắp Ca-Pô (Under The Hood)</span>
+        {/* Section Header: Left-Biased */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
+              <Terminal size={11} />
+              <span>Kiến Trúc Nhân Hệ Thống</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Đằng Sau Tốc Độ 0.02 Giây Mỗi Khung Hình
+            </h2>
+            <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
+              Tối ưu hóa từng chu kỳ vi xử lý CPU, luồng I/O đĩa cứng NVMe và đường ống GPU Metal/DirectX để phục vụ khối lượng công việc khắc nghiệt của studio.
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-            Kiến Trúc Kỹ Thuật Đằng Sau Tốc Độ 0.02 Giây
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
-            Tối ưu hóa từng chu kỳ CPU và luồng I/O đĩa cứng để phục vụ nhu cầu làm việc cường độ cao của studio chuyên nghiệp.
-          </p>
+
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0A0E18] border border-white/[0.08] text-xs text-slate-400 self-start md:self-auto font-mono">
+            <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+            <span>Zero Electron bloat</span>
+          </div>
         </div>
 
         {/* 2x2 Dense Technical Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {pillars.map((item, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-2xl bg-[#0C101B] border border-white/[0.08] hover:border-blue-500/40 transition-colors flex flex-col justify-between space-y-4 group"
+              className="p-7 rounded-3xl bg-[#0A0E18] border border-white/[0.08] hover:border-blue-500/40 transition-colors flex flex-col justify-between space-y-5 group"
             >
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-mono font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-mono font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-full">
                     {item.badge}
                   </span>
-                  <span className="text-[10px] font-mono text-slate-600">Spec 0{idx + 1}</span>
+                  <span className="text-xs font-mono text-slate-500">Spec 0{idx + 1}</span>
                 </div>
 
-                <h3 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
+                <h3 className="text-base font-bold text-white group-hover:text-blue-300 transition-colors tracking-tight">
                   {item.title}
                 </h3>
                 <h4 className="text-xs font-semibold text-slate-400">
                   {item.subtitle}
                 </h4>
-                <p className="text-xs text-slate-400 leading-relaxed pt-1">
+                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed pt-1">
                   {item.desc}
                 </p>
               </div>
 
               {/* Code Snippet Box */}
-              <div className="rounded-xl bg-[#06080E] p-3 border border-white/[0.06] font-mono text-[11px] text-slate-300 overflow-x-auto leading-relaxed">
+              <div className="rounded-2xl bg-[#070A12] p-4 border border-white/[0.04] font-mono text-xs text-slate-300 overflow-x-auto leading-relaxed">
                 <pre>
                   <code>{item.codeSnippet}</code>
                 </pre>

@@ -110,10 +110,10 @@ export function Pricing() {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`rounded-2xl p-6 flex flex-col justify-between transition-all duration-200 relative ${
+              className={`rounded-3xl p-7 flex flex-col justify-between transition-colors duration-200 relative ${
                 plan.highlight
-                  ? "bg-[#0C121F] border-2 border-blue-500 shadow-2xl shadow-blue-500/10"
-                  : "bg-[#0A0D15] border border-white/[0.08] hover:border-white/[0.15]"
+                  ? "bg-[#0E1526] border-2 border-blue-500"
+                  : "bg-[#0A0E18] border border-white/[0.08] hover:border-white/[0.16]"
               }`}
             >
               {plan.highlight && (
@@ -139,7 +139,7 @@ export function Pricing() {
                     </span>
                   </div>
                   <div className="flex items-baseline gap-1 pt-1">
-                    <span className="text-2xl sm:text-3xl font-extrabold text-white font-mono">
+                    <span className="text-2xl sm:text-3xl font-extrabold text-white font-mono tabular-nums">
                       {plan.price}
                     </span>
                     <span className="text-[11px] text-slate-400">
@@ -178,9 +178,9 @@ export function Pricing() {
                 {plan.action ? (
                   <button
                     onClick={plan.action}
-                    className={`w-full py-2.5 px-4 rounded-xl font-bold text-xs transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`w-full py-3 px-4 rounded-xl font-bold text-xs transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap ${
                       plan.highlight
-                        ? "bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/20"
+                        ? "bg-blue-600 hover:bg-blue-500 text-white shadow-sm"
                         : "bg-slate-800 hover:bg-slate-700 text-white"
                     }`}
                   >
@@ -190,7 +190,7 @@ export function Pricing() {
                 ) : (
                   <Link
                     to={plan.link}
-                    className="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-white/[0.06]"
+                    className="w-full py-3 px-4 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer border border-white/[0.06] whitespace-nowrap"
                   >
                     {plan.cta}
                   </Link>

@@ -13,7 +13,8 @@ import {
   Gauge,
   CheckCircle2,
   HardDrive,
-  Cpu,
+  Eye,
+  FileCheck,
 } from "lucide-react";
 
 interface HomePageProps {
@@ -21,128 +22,229 @@ interface HomePageProps {
 }
 
 export function HomePage({ release }: HomePageProps) {
-  const productSpotlights = [
-    {
-      title: "Photo Picker Pro",
-      badge: "CULL ENGINE",
-      headline: "Đọc RAW 33MP - 61MP trong 0.02s. Soi nét mắt 1:1 Loupe tức thì.",
-      desc: "Xây dựng trên lõi Rust native và giải mã Metal/DirectX. Loại bỏ hoàn toàn độ trễ khi lướt và lọc ảnh phóng sự, tiệc cưới hàng nghìn tấm.",
-      path: "/apps/photo-picker",
-      icon: <Layers size={22} className="text-blue-400" />,
-      features: ["Độ trễ <16ms (60 FPS)", "Soi nét 100% mắt phím Z", "RAM chỉ 118MB"],
-    },
-    {
-      title: "Contact The Sheet",
-      badge: "AUTOMATION ENGINE",
-      headline: "Dán link Google Sheets. Tự động bóc tách & gom file RAW chuẩn 100%.",
-      desc: "Chấm dứt việc thợ chụp phải căng mắt ngồi dò từng mã số ảnh khách chọn. Nhận diện chuẩn mọi dải mã (4901..4905) và xuất file trong 0.4s.",
-      path: "/apps/contact-the-sheet",
-      icon: <FileSpreadsheet size={22} className="text-blue-400" />,
-      features: ["Khớp dải mã liên tiếp", "1-Click bóc tách", "Zero file thất lạc"],
-    },
-    {
-      title: "Photo Counter",
-      badge: "AUDIT & BILLING",
-      headline: "Quét sâu đệ quy mọi thư mục. Đối soát hợp đồng giao nhận ảnh.",
-      desc: "Đếm số lượng file theo từng phân loại RAW, JPG, PSD. Đảm bảo đúng số lượng ảnh album và ảnh phóng đã cam kết trong hợp đồng studio.",
-      path: "/apps/photo-counter",
-      icon: <FolderSync size={22} className="text-blue-400" />,
-      features: ["Quét thư mục con đệ quy", "Đối soát cam kết hợp đồng", "Xuất báo cáo nghiệm thu"],
-    },
-  ];
-
   return (
-    <div className="space-y-16">
-      {/* 1. Flagship Hero */}
+    <div className="space-y-24 pb-20 ambient-glow">
+      {/* 1. Flagship Hero with spacious padding */}
       <Hero release={release} />
 
       {/* 2. Interactive Studio Workbench Simulator */}
-      <StudioWorkbench />
+      <div className="pt-2">
+        <StudioWorkbench />
+      </div>
 
-      {/* 3. Deep-Dive Product Suite Showcase */}
-      <section className="py-12 relative max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-3xl mx-auto space-y-2 mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
-            <span>Hệ Thống Ứng Dụng Chuyên Sâu</span>
+      {/* 3. Asymmetric Product Suite Showcase - Breaking the 3-column equal grid */}
+      <section className="py-8 max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
+        {/* Section Header - Left-biased, open and friendly */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[11px] font-mono font-bold text-blue-400 uppercase tracking-wider">
+              <span>Hệ Thống Ứng Dụng Chuyên Sâu</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Tự Động Hóa Toàn Diện Mọi Khâu Cho Studio Ảnh
+            </h2>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Thiết kế dành riêng cho thợ ảnh cưới, tiệc, phóng sự và sự kiện. Không phải một công cụ chung chung, mỗi module giải quyết chính xác từng điểm nghẽn trong công việc hàng ngày của bạn.
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-            Ba Cột Trụ Tự Động Hóa Dành Riêng Cho Studio
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
-            Mỗi module được thiết kế với giao diện và tính năng độc lập, phục vụ trọn vẹn từng khâu trong quy trình làm việc studio.
-          </p>
+          <Link
+            to="/download"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors shrink-0"
+          >
+            <span>Tải trọn bộ v{release.version}</span>
+            <ArrowRight size={13} />
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {productSpotlights.map((prod, idx) => (
-            <div
-              key={idx}
-              className="p-6 rounded-2xl bg-[#0A0D15] border border-white/[0.08] hover:border-blue-500/40 transition-colors flex flex-col justify-between group space-y-4 shadow-xl"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
-                    {prod.icon}
-                  </div>
-                  <span className="text-[9px] font-mono font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded">
-                    {prod.badge}
-                  </span>
-                </div>
-
-                <div className="space-y-1.5">
-                  <h3 className="text-base font-bold text-white group-hover:text-blue-300 transition-colors">
-                    {prod.title}
-                  </h3>
-                  <h4 className="text-xs font-semibold text-slate-300">
-                    {prod.headline}
-                  </h4>
-                  <p className="text-xs text-slate-400 leading-relaxed pt-1">
-                    {prod.desc}
-                  </p>
-                </div>
-
-                <ul className="space-y-1.5 pt-3 border-t border-white/[0.06] text-[11px] font-mono text-slate-300">
-                  {prod.features.map((f, fIdx) => (
-                    <li key={fIdx} className="flex items-center gap-2">
-                      <CheckCircle2 size={12} className="text-blue-400 shrink-0" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
+        {/* Feature 1: Prominent Spotlight for Photo Picker Pro (Wide Hero Card) */}
+        <div className="p-8 sm:p-10 rounded-3xl bg-[#0E1422] border border-white/[0.08] hover:border-blue-500/30 transition-colors duration-200 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-7 space-y-5">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                <Layers size={22} />
               </div>
-
-              <div className="pt-4 border-t border-white/[0.06]">
-                <Link
-                  to={prod.path}
-                  className="w-full py-2.5 px-3 rounded-xl bg-[#0F1422] hover:bg-blue-600 group-hover:text-white text-blue-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-all border border-blue-500/20 hover:border-blue-600"
-                >
-                  <span>Khám phá tính năng chi tiết</span>
-                  <ArrowRight size={13} />
-                </Link>
+              <div>
+                <span className="text-[10px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                  CORE CULL ENGINE
+                </span>
+                <h3 className="text-xl font-bold text-white mt-1">Photo Picker Pro</h3>
               </div>
             </div>
-          ))}
+
+            <h4 className="text-base sm:text-lg font-semibold text-slate-200 leading-snug">
+              Lọc 3,000 ảnh RAW trong 15 phút. Soi nét mắt 100% không giật lag.
+            </h4>
+
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Giải mã trực tiếp embedded preview từ phần cứng bằng LibRaw và GPU Metal/DirectX. Loại bỏ thời gian chờ dựng Smart Previews của Lightroom. Quạt máy tính không hú, pin dùng cả ngày ngoại cảnh.
+            </p>
+
+            <div className="grid grid-cols-3 gap-3 pt-2 font-mono text-xs">
+              <div className="p-3 rounded-xl bg-[#090D16] border border-white/[0.04]">
+                <span className="text-[10px] text-slate-500 block">Độ trễ lướt ảnh</span>
+                <span className="text-emerald-400 font-bold tabular-nums">&lt;16ms (60 FPS)</span>
+              </div>
+              <div className="p-3 rounded-xl bg-[#090D16] border border-white/[0.04]">
+                <span className="text-[10px] text-slate-500 block">Bộ nhớ RAM</span>
+                <span className="text-blue-400 font-bold tabular-nums">118 MB RSS</span>
+              </div>
+              <div className="p-3 rounded-xl bg-[#090D16] border border-white/[0.04]">
+                <span className="text-[10px] text-slate-500 block">Phím tắt soi nét</span>
+                <span className="text-amber-400 font-bold">[Z] 1:1 Loupe</span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                to="/apps/photo-picker"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-colors duration-150 whitespace-nowrap"
+              >
+                <span>Xem chi tiết Photo Picker Pro</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 rounded-2xl bg-[#07090F] p-5 border border-white/[0.06] space-y-3 font-mono text-xs">
+            <div className="flex items-center justify-between text-slate-400 border-b border-white/[0.06] pb-2 text-[11px]">
+              <span className="flex items-center gap-1.5 text-slate-200">
+                <Eye size={13} className="text-blue-400" />
+                <span>Eye Focus Inspection</span>
+              </span>
+              <span className="text-emerald-400">PIN SHARP</span>
+            </div>
+            <div className="relative rounded-xl overflow-hidden h-44 bg-black flex items-center justify-center">
+              <img
+                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=85"
+                alt="Eye focus sample"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-16 h-16 border-2 border-emerald-400/90 rounded-full flex items-center justify-center">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full" />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between text-[11px] text-slate-400 pt-1">
+              <span>SONY ILCE-7M4 · 33.1 MP</span>
+              <span className="text-blue-400">1/4000s · f/1.4 · ISO 100</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Features 2 & 3: Asymmetric 2-Column Split */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Card 2: Contact The Sheet */}
+          <div className="p-8 rounded-3xl bg-[#0E1422] border border-white/[0.08] hover:border-blue-500/30 transition-colors duration-200 flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                  <FileSpreadsheet size={22} />
+                </div>
+                <span className="text-[10px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                  AUTOMATION
+                </span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-bold text-white">Contact The Sheet</h3>
+                <h4 className="text-sm font-semibold text-slate-300">
+                  Bóc tách mã chọn từ Google Sheets trong 0.4s
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed pt-1">
+                  Chấm dứt việc căng mắt ngồi tìm từng số ảnh khách gửi trên Zalo hay Excel. Nhận diện chuẩn dải số liên tiếp (4901..4905) và gom trọn vẹn file RAW gốc vào thư mục xuất file.
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#090D16] border border-white/[0.04] space-y-1 text-xs font-mono">
+                <div className="flex justify-between text-slate-400 text-[11px]">
+                  <span>Độ chính xác:</span>
+                  <span className="text-emerald-400 font-bold">100% (Zero Missing Files)</span>
+                </div>
+                <div className="flex justify-between text-slate-400 text-[11px]">
+                  <span>Hỗ trợ nguồn:</span>
+                  <span className="text-slate-200">Google Sheets, Drive, Zalo, Excel</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-white/[0.06]">
+              <Link
+                to="/apps/contact-the-sheet"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <span>Khám phá Contact The Sheet</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 3: Photo Counter */}
+          <div className="p-8 rounded-3xl bg-[#0E1422] border border-white/[0.08] hover:border-blue-500/30 transition-colors duration-200 flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                  <FolderSync size={22} />
+                </div>
+                <span className="text-[10px] font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                  AUDIT & BILLING
+                </span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-bold text-white">Photo Counter</h3>
+                <h4 className="text-sm font-semibold text-slate-300">
+                  Đối soát hợp đồng & kiểm kê thư mục đệ quy
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed pt-1">
+                  Đếm chính xác file RAW, PSD retouch và JPG xuất in theo từng thư mục con. Đảm bảo đúng số lượng cam kết gói chụp trước khi bàn giao hồ sơ cho khách hàng.
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-[#090D16] border border-white/[0.04] space-y-1 text-xs font-mono">
+                <div className="flex justify-between text-slate-400 text-[11px]">
+                  <span>Quét thư mục con:</span>
+                  <span className="text-emerald-400 font-bold">Không giới hạn cấp đệ quy</span>
+                </div>
+                <div className="flex justify-between text-slate-400 text-[11px]">
+                  <span>Biên bản nghiệm thu:</span>
+                  <span className="text-slate-200">1-Click xuất báo cáo file</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-white/[0.06]">
+              <Link
+                to="/apps/photo-counter"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <span>Khám phá Photo Counter</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 4. Engineering Benchmark Teaser */}
-      <section className="py-12 relative max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="p-8 rounded-2xl bg-gradient-to-r from-[#0C101B] to-[#0A0D15] border border-white/[0.1] shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-blue-500/15 border border-blue-500/30 text-[10px] font-mono font-bold text-blue-300">
-              <Gauge size={11} /> Benchmark Độc Lập
+      {/* 4. Engineering Benchmark Banner - Open, Spacious, No Shadow Halos */}
+      <section className="py-8 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="p-8 sm:p-12 rounded-3xl bg-[#0E1422] border border-white/[0.08] flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-3 max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[11px] font-mono font-bold text-blue-300">
+              <Gauge size={12} />
+              <span>Benchmark Độc Lập</span>
             </div>
-            <h3 className="text-lg sm:text-xl font-bold text-white">
-              Nhanh hơn 40 lần và tiết kiệm 80% bộ nhớ so với Lightroom Classic.
+            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              Nhanh hơn 40 lần và nhẹ hơn 80% so với Adobe Lightroom Classic.
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              MVD Photo Picker Pro đọc thẳng embedded preview JPEG phần cứng mà không cần render Smart Previews, giúp máy tính chạy mát rượi và tiết kiệm pin ngoại cảnh.
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              MVD Photo Picker Pro loại bỏ các bước render trung gian, nạp thẳng embedded preview vào texture GPU Metal và DirectX. Máy chạy mát rượi và tiết kiệm pin khi chụp ngoại cảnh.
             </p>
           </div>
 
           <Link
             to="/benchmark"
-            className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-2 shrink-0 shadow-lg shadow-blue-600/20 transition-all"
+            className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-2 shrink-0 transition-colors duration-150 whitespace-nowrap"
           >
             <span>Xem Bảng So Sánh Chi Tiết</span>
             <ArrowRight size={14} />
@@ -151,21 +253,21 @@ export function HomePage({ release }: HomePageProps) {
       </section>
 
       {/* 5. Local-First & Air-Gapped Trust Guarantee */}
-      <section className="py-12 relative max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="p-6 rounded-2xl bg-[#090C16] border border-white/[0.08] text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex p-3 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            <ShieldCheck size={24} />
+      <section className="py-6 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="p-8 rounded-3xl bg-[#0A0E18] border border-white/[0.06] text-center max-w-3xl mx-auto space-y-4">
+          <div className="inline-flex p-3 rounded-2xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <ShieldCheck size={26} />
           </div>
-          <h3 className="text-base font-bold text-white">
+          <h3 className="text-lg font-bold text-white">
             Cam Kết Bảo Mật Tuyệt Đối (Air-Gapped Local-First)
           </h3>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            100% dữ liệu hình ảnh và mã khách hàng được xử lý cục bộ trên ổ cứng NVMe / SSD máy tính của bạn. MVD Tech & Design tuyệt đối không tải ảnh lên đám mây, bảo đảm an toàn thông tin cho khách hàng của bạn.
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl mx-auto">
+            100% dữ liệu hình ảnh và mã khách hàng được xử lý cục bộ trên ổ cứng NVMe / SSD máy tính của bạn. MVD Tech & Design không tải bất kỳ file nào lên đám mây, bảo đảm an toàn dữ liệu khách hàng.
           </p>
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-[11px] font-mono text-slate-500">
-            <span>✓ 0 byte cloud upload</span>
-            <span>✓ Hoạt động offline 100%</span>
-            <span>✓ Tự động đồng bộ phiên 0h00 VN</span>
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-5 text-xs font-mono text-slate-400">
+            <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-400" /> 0 byte cloud upload</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-400" /> Hoạt động offline 100%</span>
+            <span className="flex items-center gap-1.5"><CheckCircle2 size={13} className="text-emerald-400" /> Tự động đồng bộ phiên 0h00 VN</span>
           </div>
         </div>
       </section>

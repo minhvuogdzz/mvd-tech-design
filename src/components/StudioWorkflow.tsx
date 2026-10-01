@@ -41,52 +41,59 @@ export function StudioWorkflow() {
   ];
 
   return (
-    <section id="workflow" className="py-14 md:py-20 relative border-b border-white/[0.08] bg-[#07090E]">
+    <section id="workflow" className="py-16 md:py-24 relative border-b border-white/[0.08] bg-[#07090E]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-2 mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
-            <GitCommit size={11} />
-            <span>Quy Trình Chuẩn Studio</span>
+        {/* Section Header: Left-Biased */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
+              <GitCommit size={11} />
+              <span>Quy Trình Chuẩn Studio</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Tự Động Hóa Từ Thẻ Nhớ Đến Bàn Giao Khách Hàng
+            </h2>
+            <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
+              Giải phóng 90% thời gian ngồi dò từng số ảnh thủ công sau mỗi buổi chụp cưới, kỷ yếu và sự kiện.
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-            Một Chu Trình Tự Động Hóa Từ Thẻ Nhớ Đến Khách Hàng
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
-            Giúp studio giải phóng 90% thời gian ngồi dò từng số ảnh thủ công sau mỗi buổi chụp.
-          </p>
+
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0A0E18] border border-white/[0.08] text-xs text-slate-400 self-start md:self-auto font-mono">
+            <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+            <span>4 bước khép kín</span>
+          </div>
         </div>
 
         {/* 4 Steps Timeline Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map((step, idx) => (
             <div
               key={idx}
-              className="p-5 rounded-2xl bg-[#0A0D15] border border-white/[0.08] hover:border-blue-500/40 transition-colors relative flex flex-col justify-between group space-y-3"
+              className="p-6 rounded-3xl bg-[#0A0E18] border border-white/[0.08] hover:border-blue-500/40 transition-colors relative flex flex-col justify-between group space-y-4"
             >
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 <div className="flex items-center justify-between">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center">
                     {step.icon}
                   </div>
-                  <span className="font-mono font-bold text-xs text-slate-600 group-hover:text-blue-400 transition-colors">
+                  <span className="font-mono font-bold text-xs text-slate-500 group-hover:text-blue-400 transition-colors">
                     {step.num}
                   </span>
                 </div>
 
-                <div className="space-y-1">
-                  <h3 className="text-xs font-bold text-white group-hover:text-blue-300 transition-colors">
+                <div className="space-y-1.5">
+                  <h3 className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors tracking-tight">
                     {step.title}
                   </h3>
-                  <p className="text-[11px] text-slate-400 leading-relaxed pt-1">
+                  <p className="text-xs text-slate-400 leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[10px] font-mono">
+              <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between text-xs font-mono">
                 <span className="text-slate-500">Benchmark:</span>
-                <span className="text-emerald-400 font-bold">{step.timing}</span>
+                <span className="text-emerald-400 font-bold tabular-nums">{step.timing}</span>
               </div>
             </div>
           ))}
