@@ -1,4 +1,4 @@
-import { LatestRelease, ReleaseAsset } from "@/types/release";
+import { LatestRelease } from "@/types/release";
 
 const GITHUB_REPO = "minhvuogdzz/photo-picker-pro";
 
@@ -8,47 +8,43 @@ function formatBytes(bytes: number): string {
   return `${mb.toFixed(1)} MB`;
 }
 
-// Fallback release info if GitHub API is unreachable or rate limited
-const FALLBACK_RELEASE: LatestRelease = {
+export const FALLBACK_RELEASE: LatestRelease = {
   version: "2.6.6",
   tagName: "v2.6.6",
   name: "MVD Tech & Design Studio v2.6.6",
-  publishedAt: new Date().toISOString(),
-  releaseNotes: "- Tự động đăng xuất và làm mới phiên mỗi ngày lúc 0h00 (giờ Việt Nam).\n- Tối ưu hiệu năng chọn ảnh tốc độ cao cho studio.\n- Nâng cấp đồng bộ Google Sheets & Drive.\n- Sửa các lỗi nhỏ và cải thiện độ ổn định hệ thống.",
+  publishedAt: "2026-10-01T09:26:57Z",
+  releaseNotes: "- Tự động đăng xuất và làm mới phiên mỗi ngày lúc 0h00 (giờ Việt Nam).\n- Tối ưu hiệu năng đọc ảnh RAW tốc độ cao trên chip Apple Silicon.\n- Nâng cấp đồng bộ Google Sheets & Drive tự động bóc tách ảnh.\n- Cải thiện độ ổn định bộ nhớ đệm và bảo mật bản quyền offline.",
   downloads: {
     macArm64: {
       name: "MVD.T.D_2.6.6_aarch64.dmg",
       url: `https://github.com/${GITHUB_REPO}/releases/download/v2.6.6/MVD.T.D_2.6.6_aarch64.dmg`,
-      size: 94_000_000,
-      formattedSize: "94.2 MB",
+      size: 5274486,
+      formattedSize: "5.0 MB",
     },
     macIntel: {
       name: "MVD.T.D_2.6.6_x64.dmg",
       url: `https://github.com/${GITHUB_REPO}/releases/download/v2.6.6/MVD.T.D_2.6.6_x64.dmg`,
-      size: 96_000_000,
-      formattedSize: "96.5 MB",
+      size: 5581967,
+      formattedSize: "5.3 MB",
     },
     windows: {
       name: "MVD.T.D_2.6.6_x64-setup.exe",
       url: `https://github.com/${GITHUB_REPO}/releases/download/v2.6.6/MVD.T.D_2.6.6_x64-setup.exe`,
-      size: 88_000_000,
-      formattedSize: "88.4 MB",
+      size: 4827575,
+      formattedSize: "4.6 MB",
     },
   },
 };
 
-export async function getLatestRelease(): Promise<LatestRelease> {
+export async function fetchLatestRelease(): Promise<LatestRelease> {
   try {
     const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`, {
-      next: { revalidate: 60 }, // Cache for 60 seconds
       headers: {
         Accept: "application/vnd.github.v3+json",
-        "User-Agent": "MVD-Tech-Design-Web",
       },
     });
 
     if (!res.ok) {
-      console.warn(`GitHub API returned status ${res.status}, using fallback release.`);
       return FALLBACK_RELEASE;
     }
 
@@ -59,7 +55,7 @@ export async function getLatestRelease(): Promise<LatestRelease> {
       size: number;
     }>;
 
-    const findAsset = (predicate: (name: string) => boolean): ReleaseAsset | null => {
+    const findAsset = (predicate: (name: string) => boolean) => {
       const match = assets.find((a) => predicate(a.name.toLowerCase()));
       if (!match) return null;
       return {
@@ -89,16 +85,15 @@ export async function getLatestRelease(): Promise<LatestRelease> {
       version,
       tagName: rawTag,
       name: data.name || `MVD Tech & Design Studio v${version}`,
-      publishedAt: data.published_at || new Date().toISOString(),
-      releaseNotes: data.body || FALLBACK_RELEASE.releaseNotes,
+      publishedAt: data.published_at || FALLBACK_RELEASE.publishedAt,
+      releaseNotes: data.body && data.body.trim().length > 10 ? data.body : FALLBACK_RELEASE.releaseNotes,
       downloads: {
         macArm64,
         macIntel,
         windows,
       },
     };
-  } catch (error) {
-    console.error("Failed to fetch latest GitHub release:", error);
+  } catch {
     return FALLBACK_RELEASE;
   }
 }
