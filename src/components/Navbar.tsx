@@ -1,5 +1,18 @@
 import React, { useState } from "react";
-import { Download, Menu, X, ArrowUpRight } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Download,
+  Menu,
+  X,
+  ChevronDown,
+  Layers,
+  FileSpreadsheet,
+  FolderSync,
+  Gauge,
+  Tag,
+  HelpCircle,
+  Sparkles,
+} from "lucide-react";
 
 interface NavbarProps {
   version: string;
@@ -7,64 +20,158 @@ interface NavbarProps {
 
 export function Navbar({ version }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [appsDropdownOpen, setAppsDropdownOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    if (path === "/" && location.pathname === "/") return true;
+    if (path !== "/" && location.pathname.startsWith(path)) return true;
+    return false;
+  };
+
+  const navLinks = [
+    { label: "Tổng quan", path: "/" },
+    { label: "Hiệu năng", path: "/benchmark" },
+    { label: "Bảng giá", path: "/pricing" },
+    { label: "Tải về", path: "/download" },
+    { label: "Hỗ trợ", path: "/support" },
+  ];
+
+  const appItems = [
+    {
+      name: "Photo Picker Pro",
+      desc: "Lọc RAW 33MP-61MP 60fps & Loupe 100%",
+      path: "/apps/photo-picker",
+      icon: <Layers size={15} className="text-blue-400" />,
+      tag: "CORE CULL",
+    },
+    {
+      name: "Contact The Sheet",
+      desc: "Tự động hóa bóc tách Google Sheets & Drive",
+      path: "/apps/contact-the-sheet",
+      icon: <FileSpreadsheet size={15} className="text-blue-400" />,
+      tag: "AUTOMATION",
+    },
+    {
+      name: "Photo Counter",
+      desc: "Đối soát hợp đồng & kiểm kê số lượng file",
+      path: "/apps/photo-counter",
+      icon: <FolderSync size={15} className="text-blue-400" />,
+      tag: "AUDIT",
+    },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#07090E]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#07090E]/95 backdrop-blur-md">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-13 flex items-center justify-between">
         {/* Left: Brand Identity */}
-        <a href="#" className="flex items-center gap-2.5 group">
-          <img
-            src="/brand/mvd_app_icon_minimal_dark_squircle.png"
-            alt="MVD App Icon"
-            className="w-6 h-6 rounded-md border border-white/10 group-hover:border-blue-500/50 transition-colors"
-          />
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-xs sm:text-sm tracking-tight text-white group-hover:text-blue-400 transition-colors">
-              MVD Tech & Design
-            </span>
-            <span className="px-1.5 py-0.5 text-[9px] font-mono font-medium rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
-              v{version}
-            </span>
+        <div className="flex items-center gap-6">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <img
+              src="/brand/mvd_app_icon_minimal_dark_squircle.png"
+              alt="MVD App Icon"
+              className="w-6 h-6 rounded-md border border-white/10 group-hover:border-blue-500/50 transition-colors"
+            />
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-xs sm:text-sm tracking-tight text-white group-hover:text-blue-400 transition-colors">
+                MVD Tech & Design
+              </span>
+              <span className="hidden sm:inline-flex px-1.5 py-0.5 text-[9px] font-mono font-medium rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                v{version}
+              </span>
+            </div>
+          </Link>
+
+          {/* Apps Dropdown */}
+          <div
+            className="relative hidden md:block"
+            onMouseEnter={() => setAppsDropdownOpen(true)}
+            onMouseLeave={() => setAppsDropdownOpen(false)}
+          >
+            <button
+              className={`flex items-center gap-1 text-xs py-1 transition-colors cursor-pointer ${
+                location.pathname.startsWith("/apps")
+                  ? "text-blue-400 font-semibold"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <span>Bộ Ứng Dụng</span>
+              <ChevronDown
+                size={12}
+                className={`transition-transform duration-150 ${appsDropdownOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {appsDropdownOpen && (
+              <div className="absolute top-full left-0 pt-2 w-72 animate-in fade-in duration-100">
+                <div className="rounded-xl border border-white/[0.08] bg-[#0C101B] p-2 shadow-2xl space-y-1">
+                  {appItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setAppsDropdownOpen(false)}
+                      className={`p-2.5 rounded-lg flex items-start gap-2.5 transition-colors group ${
+                        location.pathname === item.path
+                          ? "bg-blue-600/15 border border-blue-500/30"
+                          : "hover:bg-white/[0.04]"
+                      }`}
+                    >
+                      <div className="p-1.5 rounded bg-slate-900 border border-white/[0.06] mt-0.5">
+                        {item.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold text-white group-hover:text-blue-300">
+                            {item.name}
+                          </span>
+                          <span className="text-[8px] font-mono font-bold text-blue-400 bg-blue-500/10 px-1 py-0.2 rounded">
+                            {item.tag}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-slate-400 leading-tight mt-0.5 truncate">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        </a>
+        </div>
 
         {/* Center: Clean Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 text-xs text-slate-400">
-          <a href="#apps" className="hover:text-white transition-colors">
-            Hệ sinh thái
-          </a>
-          <a href="#workbench" className="hover:text-white transition-colors">
-            Trải nghiệm Workbench
-          </a>
-          <a href="#benchmark" className="hover:text-white transition-colors">
-            So sánh hiệu năng
-          </a>
-          <a href="#pricing" className="hover:text-white transition-colors">
-            Bảng giá
-          </a>
-          <a href="#downloads" className="hover:text-white transition-colors">
-            Tải về
-          </a>
-          <a href="#faq" className="hover:text-white transition-colors">
-            Hỗ trợ
-          </a>
+        <nav className="hidden md:flex items-center gap-5 text-xs">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`transition-colors py-1 ${
+                isActive(link.path)
+                  ? "text-blue-400 font-semibold"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Right: Quick Action Button */}
         <div className="hidden md:flex items-center gap-3">
-          <a
-            href="#pricing"
+          <Link
+            to="/pricing"
             className="text-xs text-slate-400 hover:text-white transition-colors"
           >
             Mua bản quyền
-          </a>
-          <a
-            href="#downloads"
+          </Link>
+          <Link
+            to="/download"
             className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <Download size={13} className="stroke-[2.5]" />
             <span>Tải v{version}</span>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Hamburger */}
@@ -79,57 +186,52 @@ export function Navbar({ version }: NavbarProps) {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/[0.08] bg-[#0A0D14] px-4 py-3 space-y-2.5 text-xs">
-          <a
-            href="#apps"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-1 text-slate-300 hover:text-white"
-          >
-            Hệ sinh thái
-          </a>
-          <a
-            href="#workbench"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-1 text-slate-300 hover:text-white"
-          >
-            Trải nghiệm Workbench
-          </a>
-          <a
-            href="#benchmark"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-1 text-slate-300 hover:text-white"
-          >
-            So sánh hiệu năng
-          </a>
-          <a
-            href="#pricing"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-1 text-slate-300 hover:text-white"
-          >
-            Bảng giá bản quyền
-          </a>
-          <a
-            href="#downloads"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-1 text-slate-300 hover:text-white"
-          >
-            Tải bộ cài đặt
-          </a>
-          <a
-            href="#faq"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-1 text-slate-300 hover:text-white"
-          >
-            Hỗ trợ kỹ thuật
-          </a>
+        <div className="md:hidden border-b border-white/[0.08] bg-[#0A0D15] px-4 py-4 space-y-3 text-xs">
+          <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider font-bold">
+            Ứng dụng chuyên biệt
+          </div>
+          <div className="space-y-1 pl-1">
+            {appItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block py-1.5 text-slate-300 hover:text-blue-400 flex items-center justify-between ${
+                  location.pathname === item.path ? "text-blue-400 font-bold" : ""
+                }`}
+              >
+                <span>{item.name}</span>
+                <span className="text-[8px] font-mono text-blue-400">{item.tag}</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="border-t border-white/[0.06] pt-2 text-[10px] font-mono text-slate-500 uppercase tracking-wider font-bold">
+            Điều hướng
+          </div>
+          <div className="space-y-1 pl-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block py-1.5 text-slate-300 hover:text-blue-400 ${
+                  isActive(link.path) ? "text-blue-400 font-bold" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
           <div className="pt-2 border-t border-white/[0.08]">
-            <a
-              href="#downloads"
+            <Link
+              to="/download"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold flex items-center justify-center gap-1.5"
+              className="w-full py-2.5 rounded-lg bg-blue-600 text-white font-semibold flex items-center justify-center gap-1.5"
             >
-              <Download size={13} /> Tải v{version}
-            </a>
+              <Download size={13} /> Tải MVD Studio v{version}
+            </Link>
           </div>
         </div>
       )}

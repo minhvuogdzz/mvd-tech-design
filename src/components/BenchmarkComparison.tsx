@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Zap, Check, X, ShieldAlert, Cpu, HardDrive, BatteryCharging, Gauge } from "lucide-react";
 
 export function BenchmarkComparison() {
@@ -121,12 +122,12 @@ export function BenchmarkComparison() {
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
               <span>Kết luận: Tiết kiệm trung bình 80 — 120 phút cho mỗi ca lọc ảnh phóng sự / tiệc cưới.</span>
             </div>
-            <a
-              href="#downloads"
+            <Link
+              to="/download"
               className="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1"
             >
               Tải bản v2.6.6 về máy test ngay &rarr;
-            </a>
+            </Link>
           </div>
         </div>
       </div>

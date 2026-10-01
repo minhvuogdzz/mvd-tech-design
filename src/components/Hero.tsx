@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { LatestRelease } from "@/types/release";
 import {
   Download,
@@ -133,13 +134,13 @@ export function Hero({ release }: HeroProps) {
             </span>
           </a>
 
-          <a
-            href="#workbench"
+          <Link
+            to="/download"
             className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium text-xs border border-white/[0.08] transition-colors flex items-center justify-center gap-1.5"
           >
-            <span>Thử Demo Tương Tác</span>
+            <span>Mọi Nền Tảng & Yêu Cầu</span>
             <ArrowRight size={13} className="text-blue-400" />
-          </a>
+          </Link>
         </div>
 
         {/* Technical Highlights Row */}

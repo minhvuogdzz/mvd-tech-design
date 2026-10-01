@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Check, Zap, QrCode, X, PhoneCall, Copy, CheckCircle2 } from "lucide-react";
 
 export function Pricing() {
@@ -28,7 +29,7 @@ export function Pricing() {
         "Hỗ trợ kỹ thuật qua Zalo",
       ],
       cta: "Tải Dùng Thử Ngay",
-      link: "#downloads",
+      link: "/download",
     },
     {
       id: "pro_annual",
@@ -187,12 +188,12 @@ export function Pricing() {
                     {plan.cta}
                   </button>
                 ) : (
-                  <a
-                    href={plan.link}
+                  <Link
+                    to={plan.link}
                     className="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-white transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-white/[0.06]"
                   >
                     {plan.cta}
-                  </a>
+                  </Link>
                 )}
               </div>
             </div>
