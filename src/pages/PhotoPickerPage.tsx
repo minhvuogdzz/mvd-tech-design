@@ -60,72 +60,72 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
   ];
 
   return (
-    <div className="py-14 space-y-24 ambient-glow">
+    <div className="py-12 md:py-20 space-y-20 ambient-glow transition-colors duration-150">
       {/* 1. Product Hero - Left-Biased, Editorial & Spacious */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-8 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-mono text-blue-400">
-              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+          <div className="lg:col-span-8 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-mono text-blue-600 dark:text-blue-400">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
               <span>Photo Picker Pro · Cull Engine</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
               Lọc Hàng Nghìn Ảnh RAW Thần Tốc.{" "}
-              <span className="text-blue-400">Không Giật Lag.</span>
+              <span className="text-blue-600 dark:text-blue-400">Không Giật Lag.</span>
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
               Phần mềm chọn ảnh chuyên nghiệp thế hệ mới xây dựng trên Rust native. Giải quyết triệt để sự ì ạch của Lightroom khi phải lọc các buổi chụp tiệc cưới, phóng sự từ 1,500 đến 3,000 ảnh RAW.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-3">
               <Link
                 to="/download"
-                className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors duration-150 whitespace-nowrap shadow-sm"
+                className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors duration-150 whitespace-nowrap shadow-sm"
               >
                 <Download size={15} />
                 <span>Tải Photo Picker Pro v{release.version}</span>
               </Link>
               <Link
                 to="/benchmark"
-                className="px-5 py-3 rounded-xl bg-[#0E1422] hover:bg-[#161F33] text-slate-300 font-semibold text-xs border border-white/[0.08] transition-colors duration-150 flex items-center gap-1.5 whitespace-nowrap"
+                className="px-5 py-3 rounded-2xl bg-white dark:bg-[#0E1422] hover:bg-slate-100 dark:hover:bg-[#161F33] text-slate-700 dark:text-slate-300 font-semibold text-xs border border-slate-200 dark:border-white/[0.08] transition-colors duration-150 flex items-center gap-1.5 whitespace-nowrap shadow-sm"
               >
                 <span>Xem So Sánh Benchmark</span>
-                <ArrowRight size={13} className="text-blue-400" />
+                <ArrowRight size={13} className="text-blue-500" />
               </Link>
             </div>
           </div>
 
-          <div className="lg:col-span-4 p-6 rounded-3xl bg-[#0E1422] border border-white/[0.08] space-y-4 font-mono text-xs">
+          <div className="lg:col-span-4 p-6 rounded-3xl bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.08] space-y-4 font-mono text-xs shadow-sm">
             <div className="text-[11px] text-slate-500 uppercase tracking-wider font-bold">
               Thông Số Động Cơ
             </div>
-            <div className="space-y-2 divide-y divide-white/[0.04]">
+            <div className="space-y-2 divide-y divide-slate-100 dark:divide-white/[0.04]">
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-400">Engine Core:</span>
-                <span className="text-white font-bold">Rust / Tauri Native</span>
+                <span className="text-slate-500 dark:text-slate-400">Engine Core:</span>
+                <span className="text-slate-900 dark:text-white font-bold">Rust / Tauri Native</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-400">Bộ nhớ RAM:</span>
-                <span className="text-blue-400 font-bold tabular-nums">~118 MB RSS</span>
+                <span className="text-slate-500 dark:text-slate-400">Bộ nhớ RAM:</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold tabular-nums">~118 MB RSS</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-400">Tốc độ mở ảnh:</span>
-                <span className="text-emerald-400 font-bold tabular-nums">0.02s / frame</span>
+                <span className="text-slate-500 dark:text-slate-400">Tốc độ mở ảnh:</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold tabular-nums">0.02s / frame</span>
               </div>
               <div className="flex justify-between py-1.5">
-                <span className="text-slate-400">GPU Texture:</span>
-                <span className="text-white">Metal / DirectX</span>
+                <span className="text-slate-500 dark:text-slate-400">GPU Texture:</span>
+                <span className="text-slate-900 dark:text-white">Metal / DirectX</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Interactive Feature Showcase Stage - NO FAKE TITLEBAR DOTS */}
+      {/* 2. Interactive Feature Showcase Stage */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="rounded-3xl border border-white/[0.08] bg-[#0A0D15] overflow-hidden shadow-2xl">
+        <div className="rounded-3xl border border-slate-200 dark:border-white/[0.08] bg-[#0A0D15] overflow-hidden shadow-2xl">
           <div className="h-11 px-5 bg-[#07090F] border-b border-white/[0.08] flex items-center justify-between text-xs font-mono">
             <div className="flex items-center gap-2.5">
               <span className="w-2 h-2 rounded-full bg-blue-500 inline-block animate-pulse" />
@@ -196,7 +196,7 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
               </div>
             </div>
 
-            {/* Star Rating Interactive HUD - No bouncy scale */}
+            {/* Star Rating Interactive HUD */}
             <div className="absolute bottom-8 right-8 p-3 rounded-xl bg-[#0B0F1A]/90 backdrop-blur-md border border-white/10 flex items-center gap-3 shadow-xl">
               <span className="text-xs font-mono text-slate-400">Đánh giá:</span>
               <div className="flex items-center gap-1">
@@ -221,10 +221,10 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
       {/* 3. Deep Features Grid */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="max-w-2xl space-y-2">
-          <h2 className="text-2xl font-bold text-white tracking-tight">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
             Những Đột Phá Thiết Thực Cho Thợ Ảnh
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
             Không màu mè, từng tính năng đều được tối ưu cho tốc độ và thao tác tay của thợ lọc ảnh.
           </p>
         </div>
@@ -233,23 +233,23 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
           {features.map((item, idx) => (
             <div
               key={idx}
-              className="p-8 rounded-3xl bg-[#0E1422] border border-white/[0.08] hover:border-blue-500/30 transition-colors duration-200 flex flex-col justify-between space-y-4"
+              className="p-8 rounded-3xl bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.08] hover:border-slate-300 dark:hover:border-blue-500/30 transition-colors duration-200 flex flex-col justify-between space-y-4 shadow-sm"
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-bold text-white">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
                     {item.title}
                   </h3>
                   <div className="text-right">
-                    <span className="text-base font-mono font-extrabold text-blue-400 tabular-nums">
+                    <span className="text-base font-mono font-extrabold text-blue-600 dark:text-blue-400 tabular-nums">
                       {item.stat}
                     </span>
-                    <span className="text-[10px] font-mono text-slate-500 block">
+                    <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 block">
                       {item.statLabel}
                     </span>
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed pt-1">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pt-1">
                   {item.desc}
                 </p>
               </div>
@@ -260,44 +260,44 @@ export function PhotoPickerPage({ release }: PhotoPickerPageProps) {
 
       {/* 4. RAW Format Support Matrix */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="rounded-3xl border border-white/[0.08] bg-[#0E1422] p-8 space-y-6">
-          <div className="flex items-center gap-2.5 border-b border-white/[0.06] pb-4">
-            <Cpu size={18} className="text-blue-400" />
-            <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+        <div className="rounded-3xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0E1422] p-8 space-y-6 shadow-sm">
+          <div className="flex items-center gap-2.5 border-b border-slate-100 dark:border-white/[0.06] pb-4">
+            <Cpu size={18} className="text-blue-500" />
+            <h3 className="text-xs font-mono font-bold text-slate-900 dark:text-white uppercase tracking-wider">
               Ma Trận Định Dạng Tương Thích (Hardware LibRaw Support)
             </h3>
           </div>
-          <div className="divide-y divide-white/[0.04] text-xs sm:text-sm font-mono">
+          <div className="divide-y divide-slate-100 dark:divide-white/[0.04] text-xs sm:text-sm font-mono">
             {supportedFormats.map((item, idx) => (
               <div key={idx} className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                <span className="text-blue-400 font-bold min-w-36">{item.brand}</span>
-                <span className="text-slate-300">{item.formats}</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold min-w-36">{item.brand}</span>
+                <span className="text-slate-700 dark:text-slate-300">{item.formats}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. Bottom Action - Open and Friendly */}
+      {/* 5. Bottom Action */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4 pt-4">
-        <h3 className="text-2xl font-bold text-white">
+        <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
           Sẵn sàng lọc ảnh với tốc độ 60 FPS mượt mà?
         </h3>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           Tải về dùng thử đầy đủ 100% tính năng trong 7 ngày trên macOS và Windows.
         </p>
         <div className="flex justify-center gap-3 pt-3">
           <Link
             to="/download"
-            className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm transition-colors duration-150 whitespace-nowrap shadow-sm"
+            className="px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm transition-colors duration-150 whitespace-nowrap shadow-sm"
           >
             Tải Ngay Bản Cài Đặt
           </Link>
           <Link
             to="/pricing"
-            className="px-5 py-3 rounded-xl bg-[#0E1422] hover:bg-[#161F33] text-slate-300 font-bold text-xs sm:text-sm transition-colors duration-150 border border-white/[0.08] whitespace-nowrap"
+            className="px-5 py-3.5 rounded-2xl bg-white dark:bg-[#0E1422] hover:bg-slate-100 dark:hover:bg-[#161F33] text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm transition-colors duration-150 border border-slate-200 dark:border-white/[0.08] whitespace-nowrap shadow-sm"
           >
-            Xem Bảng Giá Bản Quyền
+            Xem Bảng Giá Tham Khảo
           </Link>
         </div>
       </section>

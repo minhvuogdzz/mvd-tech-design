@@ -1,26 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Check, Zap, QrCode, X, PhoneCall, Copy, CheckCircle2 } from "lucide-react";
+import { Check, PhoneCall, Download, Info, ShieldCheck } from "lucide-react";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 
 export function Pricing() {
-  const [selectedPlan, setSelectedPlan] = useState<{
-    name: string;
-    price: string;
-    period: string;
-    code: string;
-  } | null>(null);
-
-  const [copiedCode, setCopiedCode] = useState(false);
+  const { config, zaloUrl, telUrl } = useSiteConfig();
 
   const plans = [
     {
       id: "trial",
       name: "Bản Dùng Thử",
       price: "0đ",
-      period: "7 ngày đầy đủ",
+      period: "7 ngày trải nghiệm",
       badge: "MIỄN PHÍ",
       highlight: false,
-      desc: "Trải nghiệm đầy đủ 100% tính năng của hệ sinh thái MVD Studio trước khi quyết định mua bản quyền.",
+      desc: "Trải nghiệm đầy đủ 100% tính năng của hệ sinh thái MVD Studio trước khi quyết định đầu tư bản quyền.",
       features: [
         "Đầy đủ 4 ứng dụng trong bộ cài đặt",
         "Không giới hạn số lượng ảnh lọc",
@@ -30,12 +24,13 @@ export function Pricing() {
       ],
       cta: "Tải Dùng Thử Ngay",
       link: "/download",
+      isExternal: false,
     },
     {
       id: "pro_annual",
       name: "Bản Quyền 1 Năm",
       price: "499.000đ",
-      period: "12 tháng",
+      period: "12 tháng sử dụng",
       badge: "KHUYÊN DÙNG",
       highlight: true,
       desc: "Lựa chọn tiết kiệm chi phí tối ưu dành cho thợ ảnh tự do (freelancer) và studio quy mô vừa.",
@@ -47,23 +42,18 @@ export function Pricing() {
         "Hỗ trợ cài đặt từ xa qua UltraViewer / AnyDesk",
         "Ưu tiên hỗ trợ kỹ thuật 24/7",
       ],
-      cta: "Kích Hoạt Gói 1 Năm",
-      action: () =>
-        setSelectedPlan({
-          name: "Gói Bản Quyền 1 Năm",
-          price: "499.000đ",
-          period: "12 tháng",
-          code: "MVD PRO 1Y",
-        }),
+      cta: "Liên Hệ Tư Vấn Gói 1 Năm",
+      link: zaloUrl,
+      isExternal: true,
     },
     {
       id: "lifetime",
       name: "Bản Quyền Vĩnh Viễn",
       price: "999.000đ",
-      period: "Trọn đời",
+      period: "Sở hữu trọn đời",
       badge: "SỞ HỮU MÃI MÃI",
       highlight: false,
-      desc: "Thanh toán 1 lần duy nhất, sở hữu mãi mãi và nhận toàn bộ bản nâng cấp trong tương lai.",
+      desc: "Đầu tư một lần duy nhất, sở hữu mãi mãi và nhận toàn bộ bản nâng cấp lớn trong tương lai.",
       features: [
         "Sở hữu vĩnh viễn không thời hạn",
         "Đầy đủ mọi ứng dụng hiện tại & tương lai",
@@ -72,226 +62,168 @@ export function Pricing() {
         "Hỗ trợ chuyển đổi máy khi nâng cấp thiết bị mới",
         "Kênh hỗ trợ VIP riêng biệt",
       ],
-      cta: "Sở Hữu Trọn Đời",
-      action: () =>
-        setSelectedPlan({
-          name: "Gói Bản Quyền Vĩnh Viễn",
-          price: "999.000đ",
-          period: "Trọn đời",
-          code: "MVD LIFETIME",
-        }),
+      cta: "Liên Hệ Tư Vấn Trọn Đời",
+      link: zaloUrl,
+      isExternal: true,
     },
   ];
 
-  const handleCopyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2000);
-  };
-
   return (
-    <section id="pricing" className="py-14 md:py-20 relative bg-[#090C16] border-b border-white/[0.08]">
+    <section id="pricing" className="py-16 md:py-24 relative bg-slate-50 dark:bg-[#07090E] border-b border-slate-200 dark:border-white/[0.08] transition-colors duration-150">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center space-y-2 mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
-            <span>Bảng Giá Bản Quyền</span>
+        {/* Section Header: Left-Biased */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+              <span>Bảng Giá Tham Khảo</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Bảng Giá Tham Khảo Cho Studio & Freelancer
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+              Các mức giá dưới đây mang tính chất tham khảo dự toán chi phí. Vui lòng liên hệ trực tiếp để được tư vấn gói phù hợp với quy mô thiết bị và khối lượng công việc của bạn.
+            </p>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-            Chi Phí Đầu Tư Hợp Lý Cho Studio & Nhiếp Ảnh Gia
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
-            Tiết kiệm 60 giờ ngồi dò mã ảnh thủ công mỗi tháng. Chỉ 1 buổi chụp dịch vụ đã hoàn vốn đầu tư phần mềm.
-          </p>
+
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] text-xs text-slate-600 dark:text-slate-400 self-start md:self-auto font-mono">
+            <ShieldCheck size={14} className="text-emerald-500" />
+            <span>Giá tham khảo minh bạch</span>
+          </div>
+        </div>
+
+        {/* Notice Banner */}
+        <div className="mb-10 p-4 rounded-2xl bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 flex items-start sm:items-center gap-3 text-xs text-blue-900 dark:text-blue-300">
+          <Info size={18} className="shrink-0 text-blue-600 dark:text-blue-400 mt-0.5 sm:mt-0" />
+          <div className="flex-1 leading-relaxed">
+            <strong>Lưu ý:</strong> Chúng tôi không thu tiền tự động trên web. Mọi tư vấn, cấp bản quyền dùng thử hoặc kích hoạt chính hãng được thực hiện trực tiếp qua Hotline / Zalo:{" "}
+            <a
+              href={zaloUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="font-bold underline text-blue-700 dark:text-blue-300 hover:text-blue-500 font-mono"
+            >
+              {config.phoneFormatted}
+            </a>
+            .
+          </div>
         </div>
 
         {/* 3 Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`rounded-3xl p-7 flex flex-col justify-between transition-colors duration-200 relative ${
+              className={`p-7 rounded-3xl flex flex-col justify-between transition-colors relative space-y-6 ${
                 plan.highlight
-                  ? "bg-[#0E1526] border-2 border-blue-500"
-                  : "bg-[#0A0E18] border border-white/[0.08] hover:border-white/[0.16]"
+                  ? "bg-blue-50/70 dark:bg-[#0E1526] border-2 border-blue-600 dark:border-blue-500"
+                  : "bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] hover:border-slate-300 dark:hover:border-white/[0.16]"
               }`}
             >
-              {plan.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-sm">
-                  Được Chọn Nhiều Nhất
-                </div>
-              )}
-
               <div className="space-y-4">
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                      {plan.name}
-                    </span>
-                    <span
-                      className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded ${
-                        plan.highlight
-                          ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-                          : "bg-slate-800 text-slate-400"
-                      }`}
-                    >
-                      {plan.badge}
-                    </span>
-                  </div>
-                  <div className="flex items-baseline gap-1 pt-1">
-                    <span className="text-2xl sm:text-3xl font-extrabold text-white font-mono tabular-nums">
+                <div className="flex items-center justify-between">
+                  <span
+                    className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full ${
+                      plan.highlight
+                        ? "bg-blue-600 text-white"
+                        : "bg-slate-100 dark:bg-white/[0.06] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/[0.08]"
+                    }`}
+                  >
+                    {plan.badge}
+                  </span>
+                  <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                    {plan.period}
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white tracking-tight">
+                    {plan.name}
+                  </h3>
+                  <div className="flex items-baseline gap-1 mt-2">
+                    <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight font-mono tabular-nums">
                       {plan.price}
                     </span>
-                    <span className="text-[11px] text-slate-400">
-                      / {plan.period}
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-sans">
+                      (tham khảo)
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 leading-relaxed pt-1">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
                     {plan.desc}
                   </p>
                 </div>
 
-                <div className="space-y-2 pt-3 border-t border-white/[0.06]">
-                  <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider block">
-                    Quyền lợi bao gồm:
-                  </span>
-                  <ul className="space-y-2">
-                    {plan.features.map((feat, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                        <div
-                          className={`mt-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0 ${
-                            plan.highlight
-                              ? "bg-blue-500 text-white"
-                              : "bg-slate-800 text-slate-300"
-                          }`}
-                        >
-                          <Check size={9} className="stroke-[3]" />
-                        </div>
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="pt-4 border-t border-slate-200 dark:border-white/[0.06] space-y-2.5 text-xs text-slate-700 dark:text-slate-300">
+                  {plan.features.map((feat, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="p-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0">
+                        <Check size={12} strokeWidth={3} />
+                      </div>
+                      <span className="leading-snug">{feat}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="pt-6 mt-4 border-t border-white/[0.06]">
-                {plan.action ? (
-                  <button
-                    onClick={plan.action}
-                    className={`w-full py-3 px-4 rounded-xl font-bold text-xs transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap ${
+              {/* Action Button */}
+              <div className="pt-2">
+                {plan.isExternal ? (
+                  <a
+                    href={plan.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`w-full py-3 px-4 rounded-2xl font-bold text-xs transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap ${
                       plan.highlight
                         ? "bg-blue-600 hover:bg-blue-500 text-white shadow-sm"
-                        : "bg-slate-800 hover:bg-slate-700 text-white"
+                        : "bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] dark:text-white dark:border-white/[0.08]"
                     }`}
                   >
-                    <Zap size={13} />
-                    {plan.cta}
-                  </button>
+                    <PhoneCall size={14} />
+                    <span>{plan.cta}</span>
+                  </a>
                 ) : (
                   <Link
                     to={plan.link}
-                    className="w-full py-3 px-4 rounded-xl font-bold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer border border-white/[0.06] whitespace-nowrap"
+                    className="w-full py-3 px-4 rounded-2xl font-bold text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] dark:text-white dark:border-white/[0.08] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
                   >
-                    {plan.cta}
+                    <Download size={14} />
+                    <span>{plan.cta}</span>
                   </Link>
                 )}
               </div>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* VietQR / License Modal */}
-      {selectedPlan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-150">
-          <div className="relative w-full max-w-md rounded-2xl p-6 border border-blue-500/40 shadow-2xl bg-[#0C101B] text-slate-100 space-y-4">
-            <button
-              onClick={() => setSelectedPlan(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 cursor-pointer"
+        {/* Direct Contact Studio Card */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#0E1526] border border-slate-200 dark:border-blue-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+          <div className="space-y-1">
+            <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base tracking-tight">
+              Cần Báo Giá Theo Dự Án Hoặc Số Lượng Máy Studio?
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Liên hệ hotline trực tiếp để nhận chính sách hỗ trợ tốt nhất cho đội ngũ thợ chụp và ekip dựng ảnh.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <a
+              href={telUrl}
+              className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.08] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center gap-1.5 transition-colors font-mono"
             >
-              <X size={18} />
-            </button>
-
-            <div className="text-center space-y-1">
-              <div className="inline-flex p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                <QrCode size={20} />
-              </div>
-              <h3 className="text-base font-bold text-white">
-                Kích Hoạt {selectedPlan.name}
-              </h3>
-              <p className="text-xs text-slate-400">
-                Số tiền thanh toán: <span className="font-mono font-bold text-blue-400">{selectedPlan.price}</span> ({selectedPlan.period})
-              </p>
-            </div>
-
-            {/* QR Image Box */}
-            <div className="flex justify-center p-3 rounded-xl bg-white/5 border border-white/10">
-              <img
-                src="/brand/qr_payment.jpg"
-                alt="VietQR Chuyển Khoản"
-                className="w-48 h-auto rounded-lg shadow-md"
-              />
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-[#07090F] border border-white/[0.08] space-y-2 text-xs">
-              <div className="flex justify-between items-center py-0.5 border-b border-white/[0.06]">
-                <span className="text-slate-400">Ngân hàng:</span>
-                <span className="font-bold text-white">MB Bank (Quân Đội)</span>
-              </div>
-              <div className="flex justify-between items-center py-0.5 border-b border-white/[0.06]">
-                <span className="text-slate-400">Số tài khoản:</span>
-                <span className="font-mono font-bold text-blue-400 text-sm">
-                  8888 8888 8888
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-0.5 border-b border-white/[0.06]">
-                <span className="text-slate-400">Chủ tài khoản:</span>
-                <span className="font-bold text-white uppercase">DƯƠNG MINH VƯƠNG</span>
-              </div>
-              <div className="flex justify-between items-center py-0.5">
-                <span className="text-slate-400">Nội dung CK:</span>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                    {selectedPlan.code} [SĐT]
-                  </span>
-                  <button
-                    onClick={() => handleCopyCode(`${selectedPlan.code} 0339676003`)}
-                    className="p-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer"
-                    title="Copy nội dung"
-                  >
-                    {copiedCode ? <CheckCircle2 size={12} className="text-emerald-400" /> : <Copy size={12} />}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 text-center space-y-0.5">
-              <p className="font-bold text-[11px]">⚡ Kích Hoạt Key Tự Động Trong Vài Phút</p>
-              <p className="text-[10px] text-slate-400">
-                Sau khi chuyển khoản, bạn nhắn tin Zalo hoặc gọi 0339 676 003 để nhận mã kích hoạt bản quyền ngay lập tức.
-              </p>
-            </div>
-
-            <div className="flex gap-2 pt-1">
-              <button
-                onClick={() => setSelectedPlan(null)}
-                className="flex-1 py-2.5 rounded-xl border border-white/[0.08] text-xs font-bold text-slate-400 hover:bg-slate-800 cursor-pointer"
-              >
-                Đóng
-              </button>
-              <a
-                href="https://zalo.me/0339676003"
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
-              >
-                <PhoneCall size={13} />
-                Nhắn Zalo Nhận Key
-              </a>
-            </div>
+              <PhoneCall size={13} className="text-blue-500" />
+              <span>{config.phoneFormatted}</span>
+            </a>
+            <a
+              href={zaloUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-sm whitespace-nowrap cursor-pointer"
+            >
+              <PhoneCall size={13} />
+              <span>Nhắn Zalo Tư Vấn</span>
+            </a>
           </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }

@@ -8,7 +8,6 @@ import {
   ArrowRight,
   ShieldCheck,
   Zap,
-  Sparkles,
 } from "lucide-react";
 
 interface HeroProps {
@@ -63,55 +62,55 @@ export function Hero({ release }: HeroProps) {
   const currentDownload = getDownload();
 
   return (
-    <section className="relative pt-12 pb-16 md:pt-20 md:pb-24 border-b border-white/[0.08]">
+    <section className="relative pt-12 pb-16 md:pt-20 md:pb-24 border-b border-slate-200 dark:border-white/[0.08] transition-colors duration-150">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-8 text-center">
         {/* Release Pill with gentle glow */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0E1422] border border-white/[0.08] text-xs font-mono text-slate-300">
-          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shrink-0" />
-          <span className="text-blue-400 font-bold">MVD Studio v{release.version}</span>
-          <span className="text-slate-600">/</span>
-          <span className="text-slate-400">Tối ưu chip Apple M & Tự động đồng bộ 0h00 VN</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.08] text-xs font-mono text-slate-700 dark:text-slate-300 shadow-sm">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+          <span className="text-blue-600 dark:text-blue-400 font-bold">MVD Studio v{release.version}</span>
+          <span className="text-slate-400 dark:text-slate-600">/</span>
+          <span className="text-slate-500 dark:text-slate-400">Tối ưu chip Apple M & Local-First 100%</span>
         </div>
 
         {/* Headline with Plus Jakarta Sans - Warm, Confident, Friendly */}
         <div className="space-y-4 max-w-3xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
             Bộ phần mềm lọc ảnh & tự động hóa studio{" "}
-            <span className="text-blue-400">nhanh nhất</span> trên Mac & Windows.
+            <span className="text-blue-600 dark:text-blue-400">nhanh nhất</span> trên Mac & Windows.
           </h1>
-          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Đọc RAW 33MP—61MP tức thì trong 0.02s. Tự động bóc tách mã ảnh khách chọn từ Google Sheets & Google Drive chỉ với một cú click. Tiết kiệm 2 — 3 giờ trả file mỗi ngày cho studio.
           </p>
         </div>
 
         {/* Architecture Switcher */}
-        <div className="inline-flex p-1 rounded-xl bg-[#0E1422] border border-white/[0.08] gap-1 text-xs font-medium text-slate-400">
+        <div className="inline-flex p-1 rounded-2xl bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.08] gap-1 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-sm">
           <button
             onClick={() => setDetectedOs("mac_arm")}
-            className={`px-3 py-1.5 rounded-lg transition-colors duration-150 flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl transition-colors duration-150 flex items-center gap-1.5 cursor-pointer ${
               detectedOs === "mac_arm"
                 ? "bg-blue-600 text-white font-semibold shadow-sm"
-                : "hover:text-white"
+                : "hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <Apple size={14} /> Mac Apple Silicon
           </button>
           <button
             onClick={() => setDetectedOs("mac_intel")}
-            className={`px-3 py-1.5 rounded-lg transition-colors duration-150 flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl transition-colors duration-150 flex items-center gap-1.5 cursor-pointer ${
               detectedOs === "mac_intel"
                 ? "bg-blue-600 text-white font-semibold shadow-sm"
-                : "hover:text-white"
+                : "hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <Apple size={14} /> Mac Intel
           </button>
           <button
             onClick={() => setDetectedOs("windows")}
-            className={`px-3 py-1.5 rounded-lg transition-colors duration-150 flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-xl transition-colors duration-150 flex items-center gap-1.5 cursor-pointer ${
               detectedOs === "windows"
                 ? "bg-blue-600 text-white font-semibold shadow-sm"
-                : "hover:text-white"
+                : "hover:text-slate-900 dark:hover:text-white"
             }`}
           >
             <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -125,52 +124,52 @@ export function Hero({ release }: HeroProps) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
           <a
             href={currentDownload.url}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap shadow-sm"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap shadow-sm"
           >
             {currentDownload.icon}
             <span>{currentDownload.title}</span>
-            <span className="text-[10px] font-mono text-blue-200 bg-blue-700/60 px-2 py-0.5 rounded">
+            <span className="text-[10px] font-mono text-blue-200 bg-blue-700/60 px-2 py-0.5 rounded-md">
               v{release.version}
             </span>
           </a>
 
           <Link
             to="/download"
-            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#0E1422] hover:bg-[#151D30] text-slate-300 hover:text-white font-medium text-xs border border-white/[0.08] transition-colors duration-150 flex items-center justify-center gap-1.5 whitespace-nowrap"
+            className="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-white dark:bg-[#0E1422] hover:bg-slate-100 dark:hover:bg-[#151D30] text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold text-xs sm:text-sm border border-slate-200 dark:border-white/[0.08] transition-colors duration-150 flex items-center justify-center gap-2 whitespace-nowrap shadow-sm"
           >
             <span>Mọi Nền Tảng & Yêu Cầu</span>
-            <ArrowRight size={13} className="text-blue-400" />
+            <ArrowRight size={14} className="text-blue-500" />
           </Link>
         </div>
 
         {/* Technical Highlights Row */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2 text-xs font-mono text-slate-400">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2 text-xs font-mono text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-1.5">
-            <CheckCircle2 size={13} className="text-blue-400" />
+            <CheckCircle2 size={14} className="text-blue-500" />
             <span>Rust native engine</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <CheckCircle2 size={13} className="text-blue-400" />
+            <CheckCircle2 size={14} className="text-blue-500" />
             <span>120MB RAM footprint</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <CheckCircle2 size={13} className="text-blue-400" />
+            <CheckCircle2 size={14} className="text-blue-500" />
             <span>100% Offline an toàn</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <CheckCircle2 size={13} className="text-blue-400" />
+            <CheckCircle2 size={14} className="text-blue-500" />
             <span>7 ngày dùng thử đầy đủ</span>
           </div>
         </div>
 
         {/* Studio Keyboard Shortcuts Bar */}
         <div className="pt-2">
-          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 px-4 py-2 rounded-xl bg-[#0E1422] border border-white/[0.06] text-[11px] font-mono text-slate-400">
-            <span className="text-slate-500 font-sans text-xs">Phím tắt nhanh:</span>
-            <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-200 border border-white/5 font-bold">[1..5] Đánh giá sao</span>
-            <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-200 border border-white/5 font-bold">[6..9] Gán nhãn màu</span>
-            <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-200 border border-white/5 font-bold">[Space] Lướt ảnh</span>
-            <span className="px-2 py-0.5 rounded bg-slate-900 text-slate-200 border border-white/5 font-bold">[Z] Soi nét 100%</span>
+          <div className="inline-flex flex-wrap items-center justify-center gap-2.5 px-5 py-2.5 rounded-2xl bg-white dark:bg-[#0E1422] border border-slate-200 dark:border-white/[0.06] text-[11px] font-mono text-slate-600 dark:text-slate-400 shadow-sm">
+            <span className="text-slate-500 dark:text-slate-400 font-sans text-xs font-medium">Phím tắt nhanh:</span>
+            <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/5 font-bold">[1..5] Đánh giá sao</span>
+            <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/5 font-bold">[6..9] Gán nhãn màu</span>
+            <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/5 font-bold">[Space] Lướt ảnh</span>
+            <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/5 font-bold">[Z] Soi nét 100%</span>
           </div>
         </div>
       </div>

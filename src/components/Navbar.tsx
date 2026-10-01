@@ -8,11 +8,12 @@ import {
   Layers,
   FileSpreadsheet,
   FolderSync,
-  Gauge,
-  Tag,
-  HelpCircle,
-  Sparkles,
+  Sun,
+  Moon,
+  Laptop,
 } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 
 interface NavbarProps {
   version: string;
@@ -22,6 +23,18 @@ export function Navbar({ version }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appsDropdownOpen, setAppsDropdownOpen] = useState(false);
   const location = useLocation();
+  const { mode, setMode, isDark } = useTheme();
+  const { config, zaloUrl } = useSiteConfig();
+
+  const cycleTheme = () => {
+    if (mode === "system") {
+      setMode("light");
+    } else if (mode === "light") {
+      setMode("dark");
+    } else {
+      setMode("system");
+    }
+  };
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname === "/") return true;
@@ -42,27 +55,27 @@ export function Navbar({ version }: NavbarProps) {
       name: "Photo Picker Pro",
       desc: "Lọc RAW 33MP-61MP 60fps & Loupe 100%",
       path: "/apps/photo-picker",
-      icon: <Layers size={15} className="text-blue-400" />,
+      icon: <Layers size={15} className="text-blue-500" />,
       tag: "CORE CULL",
     },
     {
       name: "Contact The Sheet",
       desc: "Tự động hóa bóc tách Google Sheets & Drive",
       path: "/apps/contact-the-sheet",
-      icon: <FileSpreadsheet size={15} className="text-blue-400" />,
+      icon: <FileSpreadsheet size={15} className="text-blue-500" />,
       tag: "AUTOMATION",
     },
     {
       name: "Photo Counter",
       desc: "Đối soát hợp đồng & kiểm kê số lượng file",
       path: "/apps/photo-counter",
-      icon: <FolderSync size={15} className="text-blue-400" />,
+      icon: <FolderSync size={15} className="text-blue-500" />,
       tag: "AUDIT",
     },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#07090E]/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-white/[0.08] bg-white/90 dark:bg-[#07090E]/95 backdrop-blur-md transition-colors duration-150">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Left: Brand Identity */}
         <div className="flex items-center gap-6">
@@ -70,13 +83,13 @@ export function Navbar({ version }: NavbarProps) {
             <img
               src="/brand/mvd_app_icon_minimal_dark_squircle.png"
               alt="MVD App Icon"
-              className="w-7 h-7 rounded-lg border border-white/10 group-hover:border-blue-500/50 transition-colors"
+              className="w-7 h-7 rounded-lg border border-slate-300 dark:border-white/10 group-hover:border-blue-500 transition-colors"
             />
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-xs sm:text-sm tracking-tight text-white group-hover:text-blue-400 transition-colors">
+              <span className="font-semibold text-xs sm:text-sm tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 MVD Tech & Design
               </span>
-              <span className="hidden sm:inline-flex px-1.5 py-0.5 text-[9px] font-mono font-medium rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 tabular-nums">
+              <span className="hidden sm:inline-flex px-1.5 py-0.5 text-[9px] font-mono font-medium rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 tabular-nums">
                 v{version}
               </span>
             </div>
@@ -91,8 +104,8 @@ export function Navbar({ version }: NavbarProps) {
             <button
               className={`flex items-center gap-1.5 text-xs py-1 transition-colors cursor-pointer ${
                 location.pathname.startsWith("/apps")
-                  ? "text-blue-400 font-semibold"
-                  : "text-slate-400 hover:text-white"
+                  ? "text-blue-600 dark:text-blue-400 font-semibold"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
               <span>Bộ Ứng Dụng</span>
@@ -104,7 +117,7 @@ export function Navbar({ version }: NavbarProps) {
 
             {appsDropdownOpen && (
               <div className="absolute top-full left-0 pt-2 w-72 animate-in fade-in duration-100">
-                <div className="rounded-2xl border border-white/[0.08] bg-[#0A0E18] p-2 shadow-2xl space-y-1">
+                <div className="rounded-2xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0A0E18] p-2 shadow-2xl space-y-1">
                   {appItems.map((item) => (
                     <Link
                       key={item.path}
@@ -112,23 +125,23 @@ export function Navbar({ version }: NavbarProps) {
                       onClick={() => setAppsDropdownOpen(false)}
                       className={`p-2.5 rounded-xl flex items-start gap-2.5 transition-colors group ${
                         location.pathname === item.path
-                          ? "bg-blue-600/15 border border-blue-500/30"
-                          : "hover:bg-white/[0.04]"
+                          ? "bg-blue-50 dark:bg-blue-600/15 border border-blue-200 dark:border-blue-500/30"
+                          : "hover:bg-slate-50 dark:hover:bg-white/[0.04]"
                       }`}
                     >
-                      <div className="p-1.5 rounded-lg bg-slate-900 border border-white/[0.06] mt-0.5">
+                      <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/[0.06] mt-0.5">
                         {item.icon}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-white group-hover:text-blue-300">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-300">
                             {item.name}
                           </span>
-                          <span className="text-[8px] font-mono font-bold text-blue-400 bg-blue-500/10 px-1 py-0.2 rounded">
+                          <span className="text-[8px] font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1 py-0.2 rounded">
                             {item.tag}
                           </span>
                         </div>
-                        <p className="text-[10px] text-slate-400 leading-tight mt-0.5 truncate">
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5 truncate">
                           {item.desc}
                         </p>
                       </div>
@@ -148,8 +161,8 @@ export function Navbar({ version }: NavbarProps) {
               to={link.path}
               className={`transition-colors py-1 ${
                 isActive(link.path)
-                  ? "text-blue-400 font-semibold"
-                  : "text-slate-400 hover:text-white"
+                  ? "text-blue-600 dark:text-blue-400 font-bold"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
               {link.label}
@@ -157,37 +170,78 @@ export function Navbar({ version }: NavbarProps) {
           ))}
         </nav>
 
-        {/* Right: Quick Action Button */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* Right: Quick Action Buttons & Theme Switcher */}
+        <div className="hidden md:flex items-center gap-3">
+          {/* Theme Switcher Button */}
+          <button
+            onClick={cycleTheme}
+            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/[0.06] transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-medium"
+            title={`Giao diện hiện tại: ${mode === "system" ? "Ăn theo hệ thống" : mode === "light" ? "Giao diện Sáng" : "Giao diện Tối"} (Nhấn để chuyển)`}
+          >
+            {mode === "system" ? (
+              <>
+                <Laptop size={15} className="text-blue-500" />
+                <span className="text-[11px] font-mono hidden lg:inline">Tự động</span>
+              </>
+            ) : mode === "light" ? (
+              <>
+                <Sun size={15} className="text-amber-500" />
+                <span className="text-[11px] font-mono hidden lg:inline">Sáng</span>
+              </>
+            ) : (
+              <>
+                <Moon size={15} className="text-blue-400" />
+                <span className="text-[11px] font-mono hidden lg:inline">Tối</span>
+              </>
+            )}
+          </button>
+
           <Link
             to="/pricing"
-            className="text-xs text-slate-400 hover:text-white transition-colors"
+            className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
-            Mua bản quyền
+            Bảng giá
           </Link>
+
           <Link
             to="/download"
-            className="text-xs font-semibold px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-150 flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+            className="text-xs font-semibold px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-150 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shadow-sm"
           >
             <Download size={14} className="stroke-[2.5]" />
             <span>Tải v{version}</span>
           </Link>
         </div>
 
-        {/* Mobile Hamburger */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-1.5 rounded text-slate-400 hover:text-white"
-          aria-label="Toggle Navigation"
-        >
-          {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        {/* Mobile Hamburger & Theme toggle */}
+        <div className="md:hidden flex items-center gap-1">
+          <button
+            onClick={cycleTheme}
+            className="p-2 rounded-lg text-slate-600 dark:text-slate-400"
+            title="Đổi giao diện"
+          >
+            {mode === "system" ? (
+              <Laptop size={16} />
+            ) : mode === "light" ? (
+              <Sun size={16} className="text-amber-500" />
+            ) : (
+              <Moon size={16} className="text-blue-400" />
+            )}
+          </button>
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            aria-label="Toggle Navigation"
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/[0.08] bg-[#0A0D15] px-4 py-4 space-y-3 text-xs">
-          <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider font-bold">
+        <div className="md:hidden border-b border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0A0D15] px-4 py-4 space-y-3 text-xs shadow-lg">
+          <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">
             Ứng dụng chuyên biệt
           </div>
           <div className="space-y-1 pl-1">
@@ -196,17 +250,19 @@ export function Navbar({ version }: NavbarProps) {
                 key={item.path}
                 to={item.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-1.5 text-slate-300 hover:text-blue-400 flex items-center justify-between ${
-                  location.pathname === item.path ? "text-blue-400 font-bold" : ""
+                className={`py-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center justify-between ${
+                  location.pathname === item.path ? "text-blue-600 dark:text-blue-400 font-bold" : ""
                 }`}
               >
                 <span>{item.name}</span>
-                <span className="text-[8px] font-mono text-blue-400">{item.tag}</span>
+                <span className="text-[8px] font-mono text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1 py-0.5 rounded">
+                  {item.tag}
+                </span>
               </Link>
             ))}
           </div>
 
-          <div className="border-t border-white/[0.06] pt-2 text-[10px] font-mono text-slate-500 uppercase tracking-wider font-bold">
+          <div className="border-t border-slate-100 dark:border-white/[0.06] pt-2 text-[10px] font-mono text-slate-400 uppercase tracking-wider font-bold">
             Điều hướng
           </div>
           <div className="space-y-1 pl-1">
@@ -215,8 +271,8 @@ export function Navbar({ version }: NavbarProps) {
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-1.5 text-slate-300 hover:text-blue-400 ${
-                  isActive(link.path) ? "text-blue-400 font-bold" : ""
+                className={`block py-1.5 text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 ${
+                  isActive(link.path) ? "text-blue-600 dark:text-blue-400 font-bold" : ""
                 }`}
               >
                 {link.label}
@@ -224,7 +280,7 @@ export function Navbar({ version }: NavbarProps) {
             ))}
           </div>
 
-          <div className="pt-2 border-t border-white/[0.08]">
+          <div className="pt-2 border-t border-slate-100 dark:border-white/[0.08]">
             <Link
               to="/download"
               onClick={() => setMobileMenuOpen(false)}

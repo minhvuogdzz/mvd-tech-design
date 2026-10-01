@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { ChevronDown, MessageSquare, PhoneCall } from "lucide-react";
+import { useSiteConfig } from "@/context/SiteConfigContext";
 
 export function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const { config, zaloUrl } = useSiteConfig();
 
   const faqs = [
     {
@@ -36,25 +38,25 @@ export function FAQ() {
   ];
 
   return (
-    <section id="faq" className="py-16 md:py-24 relative bg-[#07090E] border-b border-white/[0.08]">
+    <section id="faq" className="py-16 md:py-24 relative bg-slate-50 dark:bg-[#07090E] border-b border-slate-200 dark:border-white/[0.08] transition-colors duration-150">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header: Left-Biased */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
               <MessageSquare size={11} />
               <span>Giải Đáp Thắc Mắc Kỹ Thuật</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Câu Hỏi Thường Gặp (FAQ)
             </h2>
-            <p className="text-sm text-slate-400 max-w-xl leading-relaxed">
+            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">
               Thông tin minh bạch về cơ chế kích hoạt bản quyền, bảo mật dữ liệu Local-First và quy trình hỗ trợ từ xa cho studio.
             </p>
           </div>
 
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0A0E18] border border-white/[0.08] text-xs text-slate-400 self-start md:self-auto font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-[#0A0E18] border border-slate-200 dark:border-white/[0.08] text-xs text-slate-600 dark:text-slate-400 self-start md:self-auto font-mono shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span>Hỗ trợ kỹ thuật 24/7</span>
           </div>
         </div>
@@ -63,22 +65,22 @@ export function FAQ() {
           {faqs.map((faq, idx) => (
             <div
               key={idx}
-              className="rounded-2xl border border-white/[0.08] bg-[#0A0E18] hover:border-white/[0.14] transition-colors overflow-hidden"
+              className="rounded-2xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0A0E18] hover:border-slate-300 dark:hover:border-white/[0.14] transition-colors overflow-hidden shadow-sm"
             >
               <button
                 onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
-                className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-sm text-white hover:text-blue-300 transition-colors cursor-pointer"
+                className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-sm text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-300 transition-colors cursor-pointer"
               >
                 <span className="leading-snug">{faq.q}</span>
                 <ChevronDown
                   size={18}
                   className={`text-slate-400 shrink-0 transition-transform duration-200 ${
-                    openIdx === idx ? "rotate-180 text-blue-400" : ""
+                    openIdx === idx ? "rotate-180 text-blue-500" : ""
                   }`}
                 />
               </button>
               {openIdx === idx && (
-                <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-white/[0.04]">
+                <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-white/[0.04]">
                   {faq.a}
                 </div>
               )}
@@ -87,23 +89,23 @@ export function FAQ() {
         </div>
 
         {/* Zalo Support CTA */}
-        <div className="mt-12 p-7 rounded-3xl bg-[#0E1526] border border-blue-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+        <div className="mt-12 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#0E1526] border border-slate-200 dark:border-blue-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-sm">
           <div className="space-y-1">
-            <h4 className="font-bold text-white text-sm sm:text-base tracking-tight">
+            <h4 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base tracking-tight">
               Cần hỗ trợ kỹ thuật hoặc tư vấn bản quyền studio?
             </h4>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               Đội ngũ kỹ sư MVD Studio hỗ trợ trực tiếp từ xa qua Zalo & UltraViewer mọi lúc bạn cần.
             </p>
           </div>
           <a
-            href="https://zalo.me/0339676003"
+            href={zaloUrl}
             target="_blank"
             rel="noreferrer"
-            className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors duration-150 shrink-0 whitespace-nowrap cursor-pointer"
+            className="px-5 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors duration-150 shrink-0 whitespace-nowrap cursor-pointer shadow-sm"
           >
             <PhoneCall size={14} />
-            <span>Zalo Kỹ Thuật: 0339 676 003</span>
+            <span>Zalo Kỹ Thuật: {config.phoneFormatted}</span>
           </a>
         </div>
       </div>
