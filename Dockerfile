@@ -4,7 +4,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Accept API URL build argument
-ARG VITE_API_URL
+ARG VITE_API_URL=https://apidhstudio.devhouse.vn
 ENV VITE_API_URL=${VITE_API_URL}
 
 COPY package*.json ./

@@ -109,8 +109,7 @@ const SAMPLE_PHOTOS: SamplePhoto[] = [
 ];
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV ? "http://localhost:3000" : "https://photo-picker-backend.onrender.com");
+  import.meta.env.VITE_API_URL || "https://apidhstudio.devhouse.vn";
 
 export function StudioWorkbench() {
   const { t, isVi } = useLanguage();
