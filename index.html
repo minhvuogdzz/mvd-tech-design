@@ -1,29 +1,39 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark scroll-smooth">
+<html lang="vi" class="scroll-smooth js">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/brand/dh_app_icon_dark_squircle.png" />
     <link rel="apple-touch-icon" href="/brand/dh_app_icon_dark_squircle.png" />
     <link rel="shortcut icon" href="/brand/dh_app_icon_dark_squircle.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DH Studio Pro · DevHouse Software | Phần Mềm Lọc Ảnh & Tự Động Hóa Studio</title>
-    <meta name="description" content="DH Studio Pro by DevHouse Software: Hệ sinh thái phần mềm studio chuyên nghiệp, lọc ảnh RAW thần tốc, tự động bóc tách Google Sheets và tối ưu quy trình làm việc studio." />
-    <meta name="theme-color" content="#090D16" />
+    <title>DH Studio Pro · DevHouse Software | Hệ Sinh Thái Lọc Ảnh Siêu Tốc & Tự Động Hóa Studio</title>
+    <meta name="description" content="DH Studio Pro by DevHouse Software: Hệ sinh thái phần mềm studio chuyên nghiệp, lọc 100.000+ ảnh RAW trong 2 giây, bóc tách mã thông minh từ Zalo/Excel, tự động hóa Google Sheets & Drive." />
+    <meta name="theme-color" content="#ffffff" />
 
-    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <!-- Google Fonts: Be Vietnam Pro & Patrick Hand & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Patrick+Hand&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.add("js");
+      document.documentElement.style.colorScheme = "light";
+      try {
+        localStorage.removeItem("mvd_theme_mode");
+        localStorage.removeItem("theme");
+      } catch (e) {}
+    </script>
 
     <meta property="og:title" content="DH Studio Pro · DevHouse Software" />
-    <meta property="og:description" content="Lọc ảnh RAW/JPG siêu tốc, tự động hóa đồng bộ Google Sheets & Drive chọn ảnh trả file cho khách hàng chỉ với 1 click." />
+    <meta property="og:description" content="Lọc ảnh RAW siêu tốc bằng Rust, tự động bóc tách mã Zalo/Excel, đồng bộ Google Sheets & Drive trả file chỉ với 1 click." />
     <meta property="og:image" content="/brand/dh_app_icon_dark_squircle.png" />
     <meta property="og:type" content="website" />
   </head>
-  <body class="bg-[#090D16] text-slate-100 antialiased selection:bg-blue-600/30 selection:text-blue-200">
+  <body class="bg-white text-[#0b0d12] antialiased selection:bg-[#2f7bff]/20 selection:text-[#2f7bff]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

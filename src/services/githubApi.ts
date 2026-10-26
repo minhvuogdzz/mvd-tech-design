@@ -9,29 +9,29 @@ function formatBytes(bytes: number): string {
 }
 
 export const FALLBACK_RELEASE: LatestRelease = {
-  version: "2.6.6",
-  tagName: "v2.6.6",
-  name: "MVD Tech & Design Studio v2.6.6",
-  publishedAt: "2026-10-01T09:26:57Z",
-  releaseNotes: "- Tự động đăng xuất và làm mới phiên mỗi ngày lúc 0h00 (giờ Việt Nam).\n- Tối ưu hiệu năng đọc ảnh RAW tốc độ cao trên chip Apple Silicon.\n- Nâng cấp đồng bộ Google Sheets & Drive tự động bóc tách ảnh.\n- Cải thiện độ ổn định bộ nhớ đệm và bảo mật bản quyền offline.",
+  version: "2.9.1",
+  tagName: "v2.9.1",
+  name: "DH Studio Pro v2.9.1",
+  publishedAt: "2026-10-26T05:18:40Z",
+  releaseNotes: "DH Studio Pro v2.9.1 - Tối ưu hiệu năng Rust Rayon, hỗ trợ chip Apple Silicon M1-M4 & Intel x64, Windows 64-bit.",
   downloads: {
     macArm64: {
-      name: "MVD.T.D_2.6.6_aarch64.dmg",
-      url: `https://github.com/${GITHUB_REPO}/releases/download/v2.6.6/MVD.T.D_2.6.6_aarch64.dmg`,
-      size: 5274486,
-      formattedSize: "5.0 MB",
+      name: "DH.Studio.Pro_2.9.1_aarch64.dmg",
+      url: `https://github.com/${GITHUB_REPO}/releases/download/v2.9.1/DH.Studio.Pro_2.9.1_aarch64.dmg`,
+      size: 11358413,
+      formattedSize: "10.8 MB",
     },
     macIntel: {
-      name: "MVD.T.D_2.6.6_x64.dmg",
-      url: `https://github.com/${GITHUB_REPO}/releases/download/v2.6.6/MVD.T.D_2.6.6_x64.dmg`,
-      size: 5581967,
-      formattedSize: "5.3 MB",
+      name: "DH.Studio.Pro_2.9.1_x64.dmg",
+      url: `https://github.com/${GITHUB_REPO}/releases/download/v2.9.1/DH.Studio.Pro_2.9.1_x64.dmg`,
+      size: 11640000,
+      formattedSize: "11.1 MB",
     },
     windows: {
-      name: "MVD.T.D_2.6.6_x64-setup.exe",
-      url: `https://github.com/${GITHUB_REPO}/releases/download/v2.6.6/MVD.T.D_2.6.6_x64-setup.exe`,
-      size: 4827575,
-      formattedSize: "4.6 MB",
+      name: "DH.Studio.Pro_2.9.1_x64-setup.exe",
+      url: `https://github.com/${GITHUB_REPO}/releases/download/v2.9.1/DH.Studio.Pro_2.9.1_x64-setup.exe`,
+      size: 7969177,
+      formattedSize: "7.6 MB",
     },
   },
 };
@@ -78,13 +78,13 @@ export async function fetchLatestRelease(): Promise<LatestRelease> {
       findAsset((n) => n.endsWith(".exe") && !n.endsWith(".sig")) ||
       FALLBACK_RELEASE.downloads.windows;
 
-    const rawTag = data.tag_name || "v2.6.6";
+    const rawTag = data.tag_name || "v2.9.1";
     const version = rawTag.startsWith("v") ? rawTag.slice(1) : rawTag;
 
     return {
       version,
       tagName: rawTag,
-      name: data.name || `MVD Tech & Design Studio v${version}`,
+      name: data.name || `DH Studio Pro v${version}`,
       publishedAt: data.published_at || FALLBACK_RELEASE.publishedAt,
       releaseNotes: data.body && data.body.trim().length > 10 ? data.body : FALLBACK_RELEASE.releaseNotes,
       downloads: {

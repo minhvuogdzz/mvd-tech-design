@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-export type ThemeMode = "system" | "light" | "dark";
+export type ThemeMode = "light" | "dark" | "system";
 
 interface ThemeContextType {
   mode: ThemeMode;
@@ -9,64 +9,25 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  mode: "system",
+  mode: "light",
   setMode: () => {},
-  isDark: true,
+  isDark: false,
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setModeState] = useState<ThemeMode>(() => {
-    if (typeof window === "undefined") return "system";
-    return (localStorage.getItem("mvd_theme_mode") as ThemeMode) || "system";
-  });
-
-  const [isDark, setIsDark] = useState<boolean>(() => {
-    if (typeof window === "undefined") return true;
-    if (mode === "dark") return true;
-    if (mode === "light") return false;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  // Pure light theme matching mfinder.vn reference
+  const [mode, setModeState] = useState<ThemeMode>("light");
+  const isDark = false;
 
   useEffect(() => {
     const root = document.documentElement;
-
-    const applyTheme = () => {
-      let resolvedDark = false;
-      if (mode === "dark") {
-        resolvedDark = true;
-      } else if (mode === "light") {
-        resolvedDark = false;
-      } else {
-        // System preference
-        resolvedDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      }
-
-      setIsDark(resolvedDark);
-      if (resolvedDark) {
-        root.classList.add("dark");
-        root.classList.remove("light");
-      } else {
-        root.classList.remove("dark");
-        root.classList.add("light");
-      }
-    };
-
-    applyTheme();
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = () => {
-      if (mode === "system") {
-        applyTheme();
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [mode]);
+    root.classList.remove("dark");
+    root.classList.add("light");
+    root.style.colorScheme = "light";
+  }, []);
 
   const setMode = (newMode: ThemeMode) => {
     setModeState(newMode);
-    localStorage.setItem("mvd_theme_mode", newMode);
   };
 
   return (
